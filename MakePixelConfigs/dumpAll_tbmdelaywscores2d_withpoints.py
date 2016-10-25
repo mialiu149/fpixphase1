@@ -32,7 +32,6 @@ def findOptimalPoints(d, minVal):
         return None
     bestScore = sorted(nd.values(), reverse=True)[0]
     optimalPoints = [k for k,v in nd.items() if v==bestScore]
-    print optimalPoints
     return optimalPoints
 
 run = run_from_argv()
@@ -119,6 +118,7 @@ for ikey, key in enumerate(f.GetListOfKeys()):
         c.Update()
 
         ep = findOptimalPoints(hDict,scaleMin)
+        print module, ep
         if ep:
             if (int(npx[0]-0.5),int(npy[0]-0.5)) in ep:
                 epx = npx
