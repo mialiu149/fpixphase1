@@ -143,12 +143,53 @@ def printtbm(xmlfilename):
         "TBMBDelay: 73"
         tbmfile.write(towrite)
 
+def findmodule(fed,fedch):
+    dictionary = getdict(filename='csv/cablingmap_fpixphase1_BmI.csv')
+    modulename = ''
+    for item in dictionary:
+        if fed in item['FED ID'] and fedch in item['FED channel']:
+           modulename = item['Official name of position']
+           break
+    return modulename
+
+def tbmdelays(filename='/home/tif/POSout/Run_0/Run_279/TBM_module_FPix_BmI_D1_BLD11_PNL1_RNG2.dat'):
+    tbmdelay = {'pll':-1,'tbma':-1,'tbmb':-1}
+    try:
+       tbmfile = open(filename,'r')    
+       for line in tbmfile:
+           if line.startswith('TBMPLLDelay'):
+              tbmdelay['pll'] = int(line.strip().split(':')[1])
+           if line.startswith('TBMADelay'):
+              tbmdelay['tbma'] = int(line.strip().split(':')[1])
+           if line.startswith('TBMBDelay'):
+              tbmdelay['tbmb'] = int(line.strip().split(':')[1])
+       return tbmdelay
+    except IOError:
+       print "Could not open file! tbm file doesn't exist"
+def findkey(run_dir='/home/tif/POSout/Run_0/Run_247/'):
+    key = 0
+    try: 
+       keyfile = open(run_dir+'/PixelConfigurationKey.txt')
+       for line in keyfile:
+           if 'Global' in line.strip() and line:
+               key = line.strip().split()[-1]
+               break
+       return key
+    except IOError:
+       print "Could not open file! config key file doesn't exist"
+
+def findconfigversions(key=0):
+    PIXELCONFIGURATIONBASE = os.environ['PIXELCONFIGURATIONBASE']
+      
 def main():
    #printnametranslation('cablingmap_fpixphase1_BmI.csv')
    #printnametranslation('csv/cablingmap_fpixphase1_BpO.csv')
-   # printportcardmap('csv/cablingmap_fpixphase1_BpO.csv')
+   #printportcardmap('csv/cablingmap_fpixphase1_BpO.csv')
    #printfecconfig('csv/cablingmap_fpixphase1_BpO.csv')
-   printtbm('csv/cablingmap_fpixphase1_BpO.csv')
+   #printtbm('csv/cablingmap_fpixphase1_BpO.csv')
+   #print tbmdelays()
+   print findconfigversions()
+
 if __name__ == "__main__":
     main()
  
