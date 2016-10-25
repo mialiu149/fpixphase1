@@ -149,12 +149,12 @@ def findmodule(fed,fedch):
     dictionary = getdict(filename='csv/cablingmap_fpixphase1_BmI.csv')
     modulename = ''
     for item in dictionary:
-        if fed in item['FED ID'] and fedch in item['FED channel']:
-           modulename = item['Official name of position']
-           break
+        if fed in item['FED ID'].split('/') and fedch in item['FED channel'].split('/'):
+            modulename = item['Official name of position']
+            break
     return modulename
 
-def tbmdelays(filename='/home/tif/POSout/Run_0/Run_279/TBM_module_FPix_BmI_D1_BLD11_PNL1_RNG2.dat'):
+def getTBMDelayParam(filename='/home/tif/POSout/Run_0/Run_279/TBM_module_FPix_BmI_D1_BLD11_PNL1_RNG2.dat'):
     tbmdelay = {'pll':-1,'tbma':-1,'tbmb':-1}
     try:
        tbmfile = open(filename,'r')    
@@ -168,6 +168,7 @@ def tbmdelays(filename='/home/tif/POSout/Run_0/Run_279/TBM_module_FPix_BmI_D1_BL
        return tbmdelay
     except IOError:
        print "Could not open file! tbm file doesn't exist"
+
 def findkey(run_dir='/home/tif/POSout/Run_0/Run_275/'):
     key = 0
     try: 
@@ -205,7 +206,8 @@ def main():
    #printfecconfig('csv/cablingmap_fpixphase1_BpO.csv')
    #printtbm('csv/cablingmap_fpixphase1_BpO.csv')
    #print tbmdelays()
-   print findconfigversions()
+   #print findconfigversions()
+   print findmodule('1299','9')
 
 if __name__ == "__main__":
     main()
