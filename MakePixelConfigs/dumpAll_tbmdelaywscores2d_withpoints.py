@@ -54,29 +54,46 @@ for ikey, key in enumerate(f.GetListOfKeys()):
     else:
         ch = obj.GetName().split('_')[1].replace('Ch','').lstrip("0") 
     module = findmodule(fed,ch)                                       
-    tbmfile = '/TBM_module_'+module+'.dat'                            
-    print fed, ch, module                                                  
-    tbmdelayParam = tbmdelays(run_dir+tbmfile)                        
-    print tbmdelayParam
-    if tbmdelayParam is None:
+    tbmfile = 'TBM_module_'+module+'.dat'                            
+    #print fed, ch, module                                                  
+    newTBMParam = tbmdelays(os.path.join(run_dir,tbmfile))                        
+    #print tbmdelayParam
+    if newTBMParam is None:
         continue
     else:
-        npx = [float(tbmdelayParam['pll']>>5)+0.5]
-        npy = [float((tbmdelayParam['pll']&28)>>2)+0.5]
+        configDict = findconfigversions(findkey(run_dir))
+        tbmVersion = configDict['tbm']
+        print os.path.join(PIXELCONFIGURATIONBASE,'tbm',str(tbmVersion),tbmfile)
+
+        oldTBMParam = tbmdelays(os.path.join('PIXELCONFIGURATIONBASE','tbm',str(tbmVersion),tbmfile))
+        print oldTBMParam
+        npx = [float(newTBMParam['pll']>>5)+0.5]
+        npy = [float((newTBMParam['pll']&28)>>2)+0.5]
+        opx = [float(oldTBMParam['pll']>>5)+0.5]
+        opy = [float((oldTBMParam['pll']&28)>>2)+0.5]
         print npx, npy
+        print opx, opy
         np = ROOT.TGraph(1, array('d',npx), array('d',npy))
-        np.SetMarkerStyle(21)
+        np.SetMarkerStyle(29)
         np.SetMarkerColor(1)
         np.SetMarkerSize(1.5)
         mks.append(np)
         mks[-1].Draw('P same')
         c.Update()
-        lgd = ROOT.TLegend(0.4,0.7,0.9,0.9)
-        lgd.SetBorderSize(0)
-        lgd.SetFillColorAlpha(1, 0)
-        lgd.SetTextSize(0.06)
-        lgd.AddEntry(np,'New Setting','p')
-        lgds.append(lgd)
+        op = ROOT.TGraph(1, array('d',opx), array('d',opy))
+        op.SetMarkerStyle(26)
+        op.SetMarkerColor(1)
+        op.SetMarkerSize(1.2)
+        mks.append(op)
+        mks[-1].Draw('P same')
+        c.Update()
+
+        #lgd = ROOT.TLegend(0.4,0.7,0.9,0.9)
+        #lgd.SetBorderSize(0)
+        #lgd.SetFillColorAlpha(1, 0)
+        #lgd.SetTextSize(0.06)
+        #lgd.AddEntry(np,'New Setting','p')
+        #lgds.append(lgd)
         #lgds[-1].Draw()
     
     if ikey % 9 == 8:
