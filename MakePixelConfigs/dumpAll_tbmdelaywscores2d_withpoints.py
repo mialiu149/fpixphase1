@@ -5,6 +5,36 @@ from JMTROOTTools import *
 from cablemap import *
 set_style()
 
+def numConvert(x):
+    return (8+x)&7
+
+def getAroundPoints((x, y)):
+    ptList = []
+    nearest = [-1,0,1]
+    for i in nearest:
+        for j in nearest:
+            if not (i or j):
+                continue
+            ptList.append((numConvert(x+i), numConvert(y+j)))
+    return ptList
+
+def findOptimalPoints(d, minVal):
+    nd = {}
+    for wp in d.items():
+        if wp[1] < minVal:
+            continue
+        wp_x, wp_y = wp[0]
+        scores = 0.
+        for ptAround in getAroundPoints((wp_x, wp_y)):
+            scores += d[ptAround]
+        nd[(wp_x, wp_y)] = scores
+    if not nd.values():
+        return None
+    bestScore = sorted(nd.values(), reverse=True)[0]
+    optimalPoints = [k for k,v in nd.items() if v==bestScore]
+    print optimalPoints
+    return optimalPoints
+
 run = run_from_argv()
 run_dir = run_dir(run)
 in_fn = os.path.join(run_dir, 'TBMDelay.root')
@@ -23,9 +53,10 @@ c.Print(pdf_fn + '[')
 
 scaleMax = 200
 scaleMin = 197
-hs=[]
-mksN=[]
-mksO=[]
+hs = []
+mksN = []
+mksO = []
+mksE = []
 #lgds=[]
 
 for ikey, key in enumerate(f.GetListOfKeys()):
@@ -39,10 +70,12 @@ for ikey, key in enumerate(f.GetListOfKeys()):
     h.SetMinimum(scaleMin)
     h.SetMaximum(scaleMax)
     hs.append(h)
+    hDict = {}
     for x in range(obj.GetNbinsX()):
         y = obj.GetBinContent(x+1)
         col = x>>3
         row = x&7
+        hDict[(col, row)] = y
         h.SetBinContent(col+1, row+1, y) 
     colors = array("i",[51+i for i in range(50)])
     ROOT.gStyle.SetPalette(len(colors), colors)
@@ -68,7 +101,7 @@ for ikey, key in enumerate(f.GetListOfKeys()):
         npy = [float((newTBMParam['pll']&28)>>2)+0.5]
         opx = [float(oldTBMParam['pll']>>5)+0.5]
         opy = [float((oldTBMParam['pll']&28)>>2)+0.5]
-       
+
         np = ROOT.TGraph(1, array('d',npx), array('d',npy))
         np.SetMarkerStyle(29)
         np.SetMarkerColor(1)
@@ -85,6 +118,23 @@ for ikey, key in enumerate(f.GetListOfKeys()):
         mksO[-1].Draw('P same') # triangle for OLD
         c.Update()
 
+        ep = findOptimalPoints(hDict,scaleMin)
+        if ep:
+            if (int(npx[0]-0.5),int(npy[0]-0.5)) in ep:
+                epx = npx
+                epy = npy
+            else:
+                epx = [float(ep[0][0])+0.5]
+                epy = [float(ep[0][1])+0.5]
+
+            ep = ROOT.TGraph(1, array('d',epx), array('d',epy))
+            ep.SetMarkerStyle(28)
+            ep.SetMarkerColor(1)
+            ep.SetMarkerSize(1.2)
+            mksE.append(ep)
+            mksE[-1].Draw('P same') # cross for EYE
+            c.Update()
+        
         #lgd = ROOT.TLegend(0.4,0.7,0.9,0.9)
         #lgd.SetBorderSize(0)
         #lgd.SetFillColorAlpha(1, 0)
