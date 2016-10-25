@@ -168,7 +168,7 @@ def tbmdelays(filename='/home/tif/POSout/Run_0/Run_279/TBM_module_FPix_BmI_D1_BL
        return tbmdelay
     except IOError:
        print "Could not open file! tbm file doesn't exist"
-def findkey(run_dir='/home/tif/POSout/Run_0/Run_247/'):
+def findkey(run_dir='/home/tif/POSout/Run_0/Run_275/'):
     key = 0
     try: 
        keyfile = open(run_dir+'/PixelConfigurationKey.txt')
@@ -180,7 +180,7 @@ def findkey(run_dir='/home/tif/POSout/Run_0/Run_247/'):
     except IOError:
        print "Could not open file! config key file doesn't exist"
 
-def findconfigversions(key = 0):
+def findconfigversions(key=15781):
     PIXELCONFIGURATIONBASE = os.environ['PIXELCONFIGURATIONBASE']
     configs = { 'key':1, 'nametranslation':1,'detconfig':1,'fedcard':0,'dac':1,'lowvoltagemap':0, 'mask':1, 'trim':1,'tbm':1,'dcdc':1,'portcard': 1,'portcardmap': 1,'fedconfig' : 0,'fecconfig' :  0,'tkfecconfig' :  0,'ttcciconfig' :  0,'ltcconfig' :  0,'calib' :  7} 
     configlist = [] 
@@ -188,13 +188,13 @@ def findconfigversions(key = 0):
        with open(PIXELCONFIGURATIONBASE+'/configurations.txt') as f:
            for line in f:
                if 'key' in line:
-                   if str(key) is line.strip().split()[-1]:
+                   if str(key) in line.strip().split(' ')[-1]:
                       for i in range(18):
-                          configlist.append(next(f).strip().split())
-       for key in configs.keys():
+                          configlist.append(next(f).strip().split(' '))
+       for k in configs.keys():
            for item in configlist[0:-1]:
-               if item[0] is key:
-                  configs[key] = item[1]
+               if item[0] in k:
+                  configs[k] = item[-1]
        return configs       
     except IOError:
         print "Could not open file! config key file doesn't exist" 
