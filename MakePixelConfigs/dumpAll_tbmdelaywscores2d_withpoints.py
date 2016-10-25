@@ -8,14 +8,15 @@ set_style()
 def numConvert(x):
     return (8+x)&7
 
-def getAroundPoints((x, y)):
-    ptList = []
+def getAroundedCoords((x, y)):
+    #ptList = []
     nearest = [-1,0,1]
-    for i in nearest:
-        for j in nearest:
-            if not (i or j):
-                continue
-            ptList.append((numConvert(x+i), numConvert(y+j)))
+    ptList = [(numConvert(x+i), numConvert(y+j)) for i in nearest for j in nearest if (i or j)]
+    #for i in nearest:
+    #    for j in nearest:
+    #        if not (i or j):
+    #            continue
+    #        ptList.append((numConvert(x+i), numConvert(y+j)))
     return ptList
 
 def findOptimalPoints(d, minVal):
@@ -25,7 +26,7 @@ def findOptimalPoints(d, minVal):
             continue
         wp_x, wp_y = wp[0]
         scores = 0.
-        for ptAround in getAroundPoints((wp_x, wp_y)):
+        for ptAround in getAroundedCoords((wp_x, wp_y)):
             scores += d[ptAround]
         nd[(wp_x, wp_y)] = scores
     if not nd.values():
