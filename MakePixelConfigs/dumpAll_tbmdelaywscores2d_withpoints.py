@@ -24,8 +24,9 @@ c.cd(0)
 pdf_fn = os.path.join(out_dir, '2d.pdf')
 c.Print(pdf_fn + '[')
 hs=[]
-mks=[]
-lgds=[]
+mksN=[]
+mksO=[]
+#lgds=[]
 
 for ikey, key in enumerate(f.GetListOfKeys()):
     obj = key.ReadObj()
@@ -72,16 +73,16 @@ for ikey, key in enumerate(f.GetListOfKeys()):
         np.SetMarkerStyle(29)
         np.SetMarkerColor(1)
         np.SetMarkerSize(1.5)
-        mks.append(np)
-        mks[-1].Draw('P same') # solid black star for NEW
+        mksN.append(np)
+        mksN[-1].Draw('P same') # solid black star for NEW
         c.Update()
         
         op = ROOT.TGraph(1, array('d',opx), array('d',opy))
         op.SetMarkerStyle(26)
         op.SetMarkerColor(1)
         op.SetMarkerSize(1.2)
-        mks.append(op)
-        mks[-1].Draw('P same') # triangle for OLD
+        mksO.append(op)
+        mksO[-1].Draw('P same') # triangle for OLD
         c.Update()
 
         #lgd = ROOT.TLegend(0.4,0.7,0.9,0.9)
