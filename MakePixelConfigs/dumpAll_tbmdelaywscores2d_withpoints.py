@@ -15,14 +15,14 @@ os.system('mkdir -p %s' % out_dir)
 
 f = ROOT.TFile(in_fn)
 
-# JMT need ROOT os.walk...
-all_graphs = defaultdict(dict)
-
 c = ROOT.TCanvas('c', '', 1300, 1000)
 c.Divide(3,3)
 c.cd(0)
 pdf_fn = os.path.join(out_dir, '2d.pdf')
 c.Print(pdf_fn + '[')
+
+scaleMax = 200
+scaleMin = 197
 hs=[]
 mksN=[]
 mksO=[]
@@ -36,10 +36,10 @@ for ikey, key in enumerate(f.GetListOfKeys()):
     h.GetYaxis().SetTitle('400 MHz')
     h.SetStats(False)
     h.SetTitle('-'.join(obj.GetName().split('_')[0:2]))
-    h.SetMinimum(197)
-    h.SetMaximum(200)
+    h.SetMinimum(scaleMin)
+    h.SetMaximum(scaleMax)
     hs.append(h)
-    for x in range(64):
+    for x in range(obj.GetNbinsX()):
         y = obj.GetBinContent(x+1)
         col = x>>3
         row = x&7
@@ -55,20 +55,20 @@ for ikey, key in enumerate(f.GetListOfKeys()):
     else:
         ch = obj.GetName().split('_')[1].replace('Ch','').lstrip("0") 
     module = findmodule(fed,ch)                                       
-    tbmfile = 'TBM_module_'+module+'.dat'                            
-    newTBMParam = tbmdelays(os.path.join(run_dir,tbmfile))                        
+    tbm_Fn = 'TBM_module_'+module+'.dat'                            
+    newTBMParam = getTBMDelayParam(os.path.join(run_dir,tbm_Fn))                        
     if newTBMParam is None:
         continue
     else:
         configDict = findconfigversions(findkey(run_dir))
         tbmVersion = configDict['tbm']
-        oldTBMParam = tbmdelays(os.path.join(PIXELCONFIGURATIONBASE,'tbm',str(tbmVersion),tbmfile))
+        oldTBMParam = getTBMDelayParam(os.path.join(PIXELCONFIGURATIONBASE,'tbm',str(tbmVersion),tbm_Fn))
         
         npx = [float(newTBMParam['pll']>>5)+0.5]
         npy = [float((newTBMParam['pll']&28)>>2)+0.5]
         opx = [float(oldTBMParam['pll']>>5)+0.5]
         opy = [float((oldTBMParam['pll']&28)>>2)+0.5]
-        
+       
         np = ROOT.TGraph(1, array('d',npx), array('d',npy))
         np.SetMarkerStyle(29)
         np.SetMarkerColor(1)
