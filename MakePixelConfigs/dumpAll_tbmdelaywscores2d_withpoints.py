@@ -9,14 +9,8 @@ def numConvert(x):
     return (8+x)&7
 
 def getAroundedCoords((x, y)):
-    #ptList = []
     nearest = [-1,0,1]
     ptList = [(numConvert(x+i), numConvert(y+j)) for i in nearest for j in nearest if (i or j)]
-    #for i in nearest:
-    #    for j in nearest:
-    #        if not (i or j):
-    #            continue
-    #        ptList.append((numConvert(x+i), numConvert(y+j)))
     return ptList
 
 def findOptimalPoints(d, minVal):
@@ -51,8 +45,8 @@ c.cd(0)
 pdf_fn = os.path.join(out_dir, '2d.pdf')
 c.Print(pdf_fn + '[')
 
-scaleMax = 200
-scaleMin = 197
+scaleMax = 100
+scaleMin = 0
 hs = []
 mksN = []
 mksO = []
@@ -119,7 +113,7 @@ for ikey, key in enumerate(f.GetListOfKeys()):
         c.Update()
 
         ep = findOptimalPoints(hDict,scaleMin)
-        print module, ep
+        #print module, ep
         if ep:
             if (int(npx[0]-0.5),int(npy[0]-0.5)) in ep:
                 epx = npx
@@ -128,7 +122,8 @@ for ikey, key in enumerate(f.GetListOfKeys()):
                 epx = [float(ep[0][0])+0.5]
                 epy = [float(ep[0][1])+0.5]
 
-            ep = ROOT.TGraph(1, array('d',epx), array('d',epy))
+            print module,ep[0], ((ep[0][0]<<5)| (ep[0][1]<<2))
+	    ep = ROOT.TGraph(1, array('d',epx), array('d',epy))
             ep.SetMarkerStyle(28)
             ep.SetMarkerColor(1)
             ep.SetMarkerSize(1.2)
