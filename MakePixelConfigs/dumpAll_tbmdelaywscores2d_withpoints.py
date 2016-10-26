@@ -13,10 +13,10 @@ def getAroundedCoords((x, y)):
     ptList = [(numConvert(x+i), numConvert(y+j)) for i in nearest for j in nearest if (i or j)]
     return ptList
 
-def findOptimalPoints(d, minVal):
+def findOptimalPoints(d, maxVal):
     nd = {}
     for wp in d.items():
-        if wp[1] < minVal:
+        if wp[1] < maxVal:
             continue
         wp_x, wp_y = wp[0]
         scores = 0.
@@ -46,7 +46,7 @@ pdf_fn = os.path.join(out_dir, '2d.pdf')
 c.Print(pdf_fn + '[')
 
 scaleMax = 100
-scaleMin = 0
+scaleMin = 90
 hs = []
 mksN = []
 mksO = []
@@ -112,7 +112,7 @@ for ikey, key in enumerate(f.GetListOfKeys()):
         mksO[-1].Draw('P same') # triangle for OLD
         c.Update()
 
-        ep = findOptimalPoints(hDict,scaleMin)
+        ep = findOptimalPoints(hDict,scaleMax)
         #print module, ep
         if ep:
             if (int(npx[0]-0.5),int(npy[0]-0.5)) in ep:
