@@ -19,7 +19,7 @@ os.system('mkdir -p %s' % out_dir)
 
 f = ROOT.TFile(in_fn)
 
-dirs = ['FPix/FPix_%(hc)s/FPix_%(hc)s_D%(dsk)i/FPix_%(hc)s_D%(dsk)i_BLD%(bld)i/FPix_%(hc)s_D%(dsk)i_BLD%(bld)i_PNL%(pnl)i/FPix_%(hc)s_D%(dsk)i_BLD%(bld)i_PNL%(pnl)i_RNG%(rng)i' % locals() for hc in ['BmI', 'BmO', 'BpI', 'BpO'] for dsk in range(1,4) for bld in range(1,18) for pnl in range(1,3) for rng in range(1,3)]
+dirs = ['Pilt/Pilt_BmI/Pilt_BmI_D%(dsk)i/Pilt_BmI_D%(dsk)i_BLD%(bld)i/Pilt_BmI_D%(dsk)i_BLD%(bld)i_PNL%(pnl)i/Pilt_BmI_D%(dsk)i_BLD%(bld)i_PNL%(pnl)i_PLQ1' %locals() for dsk in range(1,4) for bld in range(2,9) for pnl in range(1,3)]
 
 by_ntrigs = []
 first = True
