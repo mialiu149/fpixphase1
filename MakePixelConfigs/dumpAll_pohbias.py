@@ -15,7 +15,7 @@ os.system('mkdir -p %s' % out_dir)
 f = ROOT.TFile(in_fn)
 
 gains = range(4)
-feds = range(1294, 1305)
+feds = range(1287, 1294) #(1294,1301) for BmI; (1301,1308) for BmO; (1280,1287) for BpI.
 fibre = range(25)
 
 dirs = ['gain%(gn)i/FED%(fd)i' % locals() for gn in gains for fd in feds]
