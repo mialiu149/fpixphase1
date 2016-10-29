@@ -2,9 +2,21 @@ import os
 from cablemap import *
 from optparse import OptionParser
 
-parser = OptionParser()
-parser.add_option('','--fed',dest='feds',help='Input fed list as string')
-parser.add_option('','--prt',dest='prts',help='Input portcard list as string')
+class MyParser(OptionParser):
+    def format_epilog(self, formatter):
+        return self.epilog
+epi = '''
+EXAMPLE:
+    > python mkDetConfig.py --fed='1287 1289 1293'
+    > python mkDetConfig.py --prt='1TA 1BD 2TB'
+    > python mkDetConfig.py --dsk='1 3'
+    > python mkDetConfig.py --exclude='FPix_BpO_D1_BLD6_PNL2_RNG1 FPix_BpO_D1_BLD7_PNL1_RNG1'
+    > python mkDetConfig.py --fed='1290 1291' --prt='1BD 3TA' --exclude='FPix_BpO_D1_BLD6_PNL2_RNG1'
+'''
+
+parser = MyParser(epilog=epi)
+parser.add_option('','--fed',dest='feds',help='Input fed list as string.')
+parser.add_option('','--prt',dest='prts',help='Input portcard list as string.')
 parser.add_option('','--dsk',dest='dsks',help='Input disk list as string')
 parser.add_option('-e','--exclude',dest='ex',help='Input name list of module to be excluded as string')
 
@@ -32,7 +44,9 @@ def mkNewConfigVersion(configName):
     return newVersion
 
 def setAsDefault(configName, version):
+    cdb = "~tif/TriDAS/pixel/PixelConfigDBInterface/test/bin/linux/x86_64_slc6/PixelConfigDBCmd.exe "
     args = "--insertVersionAlias "+configName+" "+str(version)+" Default"
+    print cdb+args
     os.system(cdb+args)
 
 
@@ -56,7 +70,8 @@ def main():
         moduleListByDsk=[item['Official name of position'] for item in dictionary if len(item['Official name of position'].split('_'))>3 and item['Official name of position'].split('_')[2][-1] in dsklist]
     
     moduleList = moduleListByFed + moduleListByPrt + moduleListByDsk
-    
+    moduleList = sorted(set(moduleList))
+
     if opts.ex:
         exlist = opts.ex.split(' ')
         moduleList = [module for module in moduleList if module not in exlist]
