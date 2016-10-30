@@ -61,7 +61,7 @@ moduleONList = getModuleList(os.path.join(PIXELCONFIGURATIONBASE,'detconfig',str
 c = ROOT.TCanvas('c', '', 1300, 1000)
 c.Divide(3,3)
 c.cd(0)
-pdf_fn = os.path.join(out_dir, 'test.pdf')
+pdf_fn = os.path.join(out_dir, '2d_pts.pdf')
 c.Print(pdf_fn + '[')
 
 scaleMax = 200
