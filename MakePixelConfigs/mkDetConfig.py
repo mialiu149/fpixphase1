@@ -18,7 +18,8 @@ parser = MyParser(epilog=epi)
 parser.add_option('','--fed',dest='feds',help='Input fed list as string.')
 parser.add_option('','--prt',dest='prts',help='Input portcard list as string.')
 parser.add_option('','--dsk',dest='dsks',help='Input disk list as string')
-parser.add_option('-e','--exclude',dest='ex',help='Input name list of module to be excluded as string')
+parser.add_option('','--exclude',dest='ex',help='Input name list of module to be excluded as string')
+parser.add_option('','--include',dest='icld',help='Input name list of module to be included as string')
 
 (opts, args) = parser.parse_args()
 
@@ -58,6 +59,7 @@ def main():
     moduleListByFed = []
     moduleListByPrt = []
     moduleListByDsk = []
+    includelist = []
     
     if opts.feds:
          fedlist = opts.feds.split(' ')
@@ -69,7 +71,10 @@ def main():
         dsklist = opts.dsks.split(' ')
         moduleListByDsk=[item['Official name of position'] for item in dictionary if len(item['Official name of position'].split('_'))>3 and item['Official name of position'].split('_')[2][-1] in dsklist]
     
-    moduleList = moduleListByFed + moduleListByPrt + moduleListByDsk
+    if opts.icld:
+        includelist = opts.icld.split(' ')
+
+    moduleList = moduleListByFed + moduleListByPrt + moduleListByDsk + includelist
     moduleList = sorted(set(moduleList))
 
     if opts.ex:
