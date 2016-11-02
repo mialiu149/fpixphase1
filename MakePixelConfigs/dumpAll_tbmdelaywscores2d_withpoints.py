@@ -8,29 +8,38 @@ set_style()
 def numConvert(x):
     return (8+x)&7
 
-def getAroundedCoords((x, y)):
-    nearest = [-1,0,1]
+def getAroundedCoords((x, y), n):
+    nearest = range(-n,n+1)
     ptList = [(numConvert(x+i), numConvert(y+j)) for i in nearest for j in nearest if (i or j)]
     return ptList
 
-def findOptimalPoints(h, maxVal):
-    hd={}
+def findOptimalPoints(h):
+    hd = {}
     for x in range(h.GetNbinsX()):
         for y in range(h.GetNbinsY()):
             hd[(x,y)] = h.GetBinContent(x+1,y+1)
     nd = {}
     for wp in hd.items():
-        if wp[1] < maxVal:
+        if wp[1] < max(hd.values()):
             continue
         wp_x, wp_y = wp[0]
         scores = 0.
-        for ptAround in getAroundedCoords((wp_x, wp_y)):
+        for ptAround in getAroundedCoords((wp_x, wp_y),1):
             scores += hd[ptAround]
         nd[(wp_x, wp_y)] = scores
     if not nd.values():
         return None
     bestScore = sorted(nd.values(), reverse=True)[0]
     optimalPoints = [k for k,v in nd.items() if v==bestScore]
+    if len(optimalPoints)>1:
+        nnd = {}
+        for coords in optimalPoints:
+            scores = 0.
+            for ptNAround in getAroundedCoords(coords,2):
+                scores += hd[ptNAround]
+            nnd[coords] = scores
+        bestScore = sorted(nnd.values(), reverse=True)[0]
+        optimalPoints = [k for k,v in nnd.items() if v==bestScore]
     return optimalPoints
 
 def getModuleList(detconfig_Fn):
@@ -140,7 +149,7 @@ for index, h in enumerate(hs):
         mksO[-1].Draw('P same') # triangle for OLD
         c.Update()
 
-        ep = findOptimalPoints(h, scaleMax)
+        ep = findOptimalPoints(h)
         if ep:
             if (int(npx[0]-0.5),int(npy[0]-0.5)) in ep:
                 epx = npx
