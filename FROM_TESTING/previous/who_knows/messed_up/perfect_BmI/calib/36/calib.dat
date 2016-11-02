@@ -1,0 +1,28 @@
+Mode: Iana
+Parameters:
+ReadCurrent no
+ManualReads yes
+UseOSD yes
+SleepTime 8
+SleepTimeAtZero 8
+NPoints 10
+IanaRes 25
+MixVanas yes
+TurnOffVsf no
+Rows:
+0
+Cols:
+0
+VcalHigh
+Repeat:
+1
+Rocs:
+FPix_BmI_D3_BLD1_PNL1_RNG1_ROC0
+FPix_BmI_D3_BLD1_PNL1_RNG1_ROC1
+FPix_BmI_D3_BLD1_PNL1_RNG1_ROC2
+FPix_BmI_D3_BLD1_PNL1_RNG1_ROC3
+FPix_BmI_D3_BLD1_PNL1_RNG1_ROC4
+FPix_BmI_D3_BLD1_PNL1_RNG1_ROC5
+FPix_BmI_D3_BLD1_PNL1_RNG1_ROC6
+FPix_BmI_D3_BLD1_PNL1_RNG1_ROC7
+
