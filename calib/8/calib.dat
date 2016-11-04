@@ -5,7 +5,7 @@ Cols:
 20
 VcalLow
 Scan: CalDel 0 255 1
-Scan: WBC 99 101 1
+Scan: WBC 70 110 1
 Set: Vcal 100
 Repeat: 10
 Rocs:
