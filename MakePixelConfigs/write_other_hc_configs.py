@@ -2,9 +2,10 @@ import sys, csv, os
 from pprint import pprint
 from collections import defaultdict
 
-#HC, csv_fn, fed_offset = 'BmI', '/home/fnaltest/TriDAS/Config/FROM_TESTING/BmI.csv', 0
+#HC, csv_fn, fed_offset = 'BmI', 'csv/cablingmap_fpixphase1_BmI.csv', 7
 HC, csv_fn, fed_offset = 'BpO', 'csv/cablingmap_fpixphase1_BpO.csv', 7
-#HC, csv_fn, fed_offset = 'BpO', '/home/tif/fpixphase1/config_BpO_warm/FROM_TESTING/bpo.csv', 7
+#HC, csv_fn, fed_offset = 'BmO', 'csv/cablingmap_fpixphase1_BmO.csv', 7
+#HC, csv_fn, fed_offset = 'BpI', 'csv/cablingmap_fpixphase1_BpI.csv', 7
 
 class Module:
     header = None
@@ -48,10 +49,11 @@ class Module:
         assert hj[1] in 'TB'
         assert hj[2] in 'ABCD'
 
-        if HC == 'BmI':
-            self.portcard_connection = int(d['PC connection'])
-        else:
-            self.portcard_connection = int(d['PC port'])
+        #if HC == 'BmI':
+        #    self.portcard_connection = int(d['PC connection'])
+        #else:
+        #    self.portcard_connection = int(d['PC port'])
+        self.portcard_connection = int(d['PC port'])
         self.portcard_identifier = d['PC identifier']
 
         self.dcdc = d['DCDC']
@@ -81,7 +83,7 @@ class Module:
         self.crate = d['FEC/FED crate']
         self.fed_id = int(d['FED ID']) + fed_offset
         self.fed_crate = 1
-        assert self.fed_id - self.fed_position == 1293
+        #assert self.fed_id - self.fed_position == 1293
 
         a,b = self.fed_channel_str.split('/')
         a,b = int(a), int(b)
