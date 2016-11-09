@@ -2,8 +2,8 @@ import sys, csv, os
 from pprint import pprint
 from collections import defaultdict
 
-#HC, csv_fn, fed_offset = 'BmI', 'csv/cablingmap_fpixphase1_BmI.csv', 7
-HC, csv_fn, fed_offset = 'BpO', 'csv/cablingmap_fpixphase1_BpO.csv', 7
+HC, csv_fn, fed_offset = 'BmI', 'csv/cablingmap_fpixphase1_BmI.csv', 7
+#HC, csv_fn, fed_offset = 'BpO', 'csv/cablingmap_fpixphase1_BpO.csv', 7
 #HC, csv_fn, fed_offset = 'BmO', 'csv/cablingmap_fpixphase1_BmO.csv', 7
 #HC, csv_fn, fed_offset = 'BpI', 'csv/cablingmap_fpixphase1_BpI.csv', 7
 
@@ -235,6 +235,7 @@ class cable_map_parser:
 
     # and disconnected modules from too-short cables
     def portcardOK(self, pc):
+        return True #ignore this part
         if pc == 'FPix_BmI_D1_PRT4':
             return False
         if pc == 'FPix_BpO_D2_PRT1':
@@ -251,6 +252,7 @@ class cable_map_parser:
             return False
 
         if HC == 'BmI':
+            return True #ignore this part
             if m.portcard_hj == '3TA' and m.portcard_connection == 7:
                 return False
 
