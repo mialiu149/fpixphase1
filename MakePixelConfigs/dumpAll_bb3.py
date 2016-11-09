@@ -154,6 +154,7 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
             for i in xrange(16):
                 roc = module.name + '_ROC' + str(i)
                 if not d.has_key(roc):
+                    lists.append([0]*4160) #append anyway, don't want to lose
                     continue
                 any_ok = True
                 lists.append(d[roc])
@@ -176,7 +177,6 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
 
                 if label == 'bad' and val != 0:
                     bad_counts[roc] += 1
-
                 return val
 
             hs = flat_to_module(label, module.name, lists, xform)
@@ -198,11 +198,21 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
 
 map_c.SaveAs(module_maps_out_fn + ']')
 
+out_dp_fn = os.path.join(out_dir,'deadPixelBySigma.txt')
+if os.path.isfile(out_dp_fn):
+    cmd = 'mv %s %s' %(out_dp_fn,out_dp_fn+'.old')
+    os.system(cmd)
+
 print 'bad by roc:'
 for roc, n in bad_counts.iteritems():
     module_name = roc.split('_ROC')[0]
     m = the_doer.modules_by_name[module_name]
     #print n, module_name, 'D%i-%s' % (disk, 'outer' if m.rng == 2 else 'inner'), m.internal_name, m.module
-    print n, module_name, m.internal_name, m.module
+    outline = module_name + '\t' + str(n) + '\n'
+    with open(out_dp_fn,'a+') as output:
+        output.write(outline)
+    #print n, module_name, m.internal_name, m.module
 
 os.system('evince %s'%module_maps_out_fn)
+os.system('cat %s' %out_dp_fn)
+os.system('wc -l %s' %out_dp_fn)
