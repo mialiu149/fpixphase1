@@ -265,6 +265,7 @@ class cable_map_parser:
                 return False
 
         if HC == 'BpO':
+            return True #ignore this exclusion
             if (m.portcard_hj == '1TA' and m.portcard_connection == 2) or \
                (m.portcard_hj == '3TC' and m.portcard_connection == 2):
                 return False
