@@ -42,7 +42,7 @@ c.cd(0)
 c.SaveAs(roc_fits_out_fn + '[')
 
 for iroc, (roc, l) in enumerate(t.ls.iteritems()):
-    print iroc, roc
+    #print iroc, roc
     #if iroc % 10 != 0:
     #    continue
 
@@ -147,14 +147,13 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
     modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi) if the_doer.moduleOK(m) and m.portcardnum == pcnum]
 
     for module in modules:
-        print module.name
+        #print module.name
         for label, d in [('raw', raw), ('norm', norm), ('bad', norm)]:
             lists = []
             any_ok = False
             for i in xrange(16):
                 roc = module.name + '_ROC' + str(i)
                 if not d.has_key(roc):
-                    lists.append([0]*4160) #append anyway, don't want to lose
                     continue
                 any_ok = True
                 lists.append(d[roc])
@@ -177,6 +176,8 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
 
                 if label == 'bad' and val != 0:
                     bad_counts[roc] += 1
+                else:
+                    bad_counts[roc] == 0
                 return val
 
             hs = flat_to_module(label, module.name, lists, xform)
@@ -213,6 +214,7 @@ for roc, n in bad_counts.iteritems():
         output.write(outline)
     #print n, module_name, m.internal_name, m.module
 
-os.system('evince %s'%module_maps_out_fn)
 os.system('cat %s' %out_dp_fn)
 os.system('wc -l %s' %out_dp_fn)
+os.system('evince %s'%module_maps_out_fn)
+
