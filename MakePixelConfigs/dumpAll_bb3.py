@@ -136,7 +136,7 @@ map_c = None #ROOT.TCanvas('c', '', 1920, 1000)
 #this_out_fn = out_fn + '.module_maps.pdf'
 module_maps_out_fn = os.path.join(out_dir,'bb3_module_maps.pdf')
 
-bad_counts = defaultdict(int)
+bad_counts = defaultdict(lambda: [0]*16) #defaultdict(int)
 
 #min_pcnum = 2 if disk == 2 else 1
 min_pcnum = 1
@@ -175,9 +175,9 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
                 #    val = 0
 
                 if label == 'bad' and val != 0:
-                    bad_counts[roc] += 1
+                    bad_counts[module_name][rocnum] += 1
                 else:
-                    bad_counts[roc] == 0
+                    bad_counts[module_name][rocnum] += 0
                 return val
 
             hs = flat_to_module(label, module.name, lists, xform)
@@ -204,17 +204,13 @@ if os.path.isfile(out_dp_fn):
     cmd = 'mv %s %s' %(out_dp_fn,out_dp_fn+'.old')
     os.system(cmd)
 
-print 'bad by roc:'
-for roc, n in bad_counts.iteritems():
-    module_name = roc.split('_ROC')[0]
-    m = the_doer.modules_by_name[module_name]
-    #print n, module_name, 'D%i-%s' % (disk, 'outer' if m.rng == 2 else 'inner'), m.internal_name, m.module
-    outline = module_name + '\t' + str(n) + '\n'
+print 'bad by module/roc:'
+for m, rl in bad_counts.iteritems():
+    outline = '{0:30}{1:3d}  {2}\n'.format(m,sum(rl),str(rl)) 
     with open(out_dp_fn,'a+') as output:
         output.write(outline)
-    #print n, module_name, m.internal_name, m.module
+
 
 os.system('cat %s' %out_dp_fn)
 os.system('wc -l %s' %out_dp_fn)
 os.system('evince %s'%module_maps_out_fn)
-
