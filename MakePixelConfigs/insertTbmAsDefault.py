@@ -8,6 +8,7 @@ run_dir = os.path.join(POS_OUTPUT_DIRS,'Run_0','Run_%d'%run_num)
 config='tbm'
 
 tbmNewVersion = mkNewConfigVersion(config)
+tbmOldDir = os.path.join(PIXELCONFIGURATIONBASE,config,str(tbmNewVersion-1))
 tbmNewDir = os.path.join(PIXELCONFIGURATIONBASE,config,str(tbmNewVersion))
 tbmDatList = glob(os.path.join(run_dir,'TBM_module_FPix*.dat'))
 if len(tbmDatList)==0:
@@ -15,9 +16,12 @@ if len(tbmDatList)==0:
     os.system('rmdir %s'%tbmNewDir)
     sys.exit(0)
 
-cmd = 'cp %s %s' %(os.path.join(run_dir,'TBM_module_FPix*.dat'),tbmNewDir)
-print cmd
-os.system(cmd)
+cmd1 = 'cp -r %s %s' %(tbmOldDir,tbmNewDir)
+cmd2 = 'cp %s %s' %(os.path.join(run_dir,'TBM_module_FPix*.dat'),tbmNewDir)
+print cmd1
+print cmd2
+os.system(cmd1)
+os.system(cmd2)
 
 save = raw_input("Do you want to set new version <%s/%d> as default? (y/N)?\n"%(config,tbmNewVersion))
 
