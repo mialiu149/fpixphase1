@@ -41,6 +41,8 @@ Dumper scripts used for calibration result quick check.
   
   ```bash
   python dumpAll_pixelalive.py <pixelAlive run number>
+  # make plots grouped in a module
+  python dumpAll_pixelalive_map.py <pixelAlive run number>
   ```
   
 - SCurve
