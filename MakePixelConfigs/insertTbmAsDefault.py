@@ -16,7 +16,7 @@ if len(tbmDatList)==0:
     os.system('rmdir %s'%tbmNewDir)
     sys.exit(0)
 
-cmd1 = 'cp -r %s %s' %(tbmOldDir,tbmNewDir)
+cmd1 = 'cp -r %s/* %s/' %(tbmOldDir,tbmNewDir)
 cmd2 = 'cp %s %s' %(os.path.join(run_dir,'TBM_module_FPix*.dat'),tbmNewDir)
 print cmd1
 print cmd2
