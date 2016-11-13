@@ -11,7 +11,7 @@ EXAMPLE:
     > python mkDetConfig.py --prt='1TA 1BD 2TB'
     > python mkDetConfig.py --dsk='1 3'
     > python mkDetConfig.py --exclude='FPix_BpO_D1_BLD6_PNL2_RNG1 FPix_BpO_D1_BLD7_PNL1_RNG1'
-    > python mkDetConfig.py --fed='1290 1291' --prt='1BD 3TA' --exclude='FPix_BpO_D1_BLD6_PNL2_RNG1'
+    > python mkDetConfig.py --fed='1290 1291' --prt='1BD 3TA' --exclude='FPix_BpO_D1_BLD6_PNL2_RNG1' # if both fed and prt arguements are provided, the logic is 'AND'.
 '''
 
 parser = MyParser(epilog=epi)
@@ -74,7 +74,11 @@ def main():
     if opts.icld:
         includelist = opts.icld.split(' ')
 
-    moduleList = moduleListByFed + moduleListByPrt + moduleListByDsk + includelist
+    if len(moduleListByPrt)>0 and len(moduleListByFed)>0:
+        moduleList = [m for m in moduleListByPrt if m in moduleListByFed]
+        moduleList = moduleList + moduleListByDsk + includelist
+    else:
+        moduleList = moduleListByFed + moduleListByPrt + moduleListByDsk + includelist
     moduleList = sorted(set(moduleList))
 
     if opts.ex:
