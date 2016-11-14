@@ -1,5 +1,5 @@
 ConfigurationAliases
-CheckCurrent     0  ;
+CheckCurrent     0   ;
 ChannelMapTest     5   detconfig  Default  portcardmap  Default  nametranslation  Default  fedcard  Default  dac  Default  lowvoltagemap  Default  maxvsf  Default  mask  Default  trim  Default  tbm  Default  dcdc  Default  portcard  Default  fedconfig  Default  fecconfig  Default  tkfecconfig  Default  ttcciconfig  Default  ltcconfig  Default  amc13  Default  globaldelay25  Default  calib  ChannelMapTest  ;
 tbmdelay     13   ;
 PixelAlive     3   detconfig  Default  portcardmap  Default  nametranslation  Default  fedcard  Default  dac  Default  lowvoltagemap  Default  maxvsf  Default  mask  Default  trim  Default  tbm  Default  dcdc  Default  portcard  Default  fedconfig  Default  fecconfig  Default  tkfecconfig  Default  ttcciconfig  Default  ltcconfig  Default  amc13  Default  globaldelay25  Default  calib  PixelAlive  ;
@@ -27,6 +27,7 @@ portcardmap  0 Default ;
 tkfecconfig  0 Default ;
 ttcciconfig  0 Default ;
 ltcconfig  0 Default ;
+calib  50 BB ;
 calib  7 Delay25 ;
 calib  12 ChannelMapTest ;
 calib  11 POHBias ;
