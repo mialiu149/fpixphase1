@@ -516,12 +516,12 @@ def setupSummaryCanvas(summaryPlot, moduleName = None):
     # this is true except for MoReWeb, when we don't want to draw a title
     if dirName is not None:
         title.AddText(dirName + ": " + plotName)
-    title.SetFillColor(0)
-    title.SetTextAlign(22)
-    title.SetTextFont(42)
-    title.SetBorderSize(0)
-    title.Draw()
-    SetOwnership(title,False)  # avoid going out of scope at return statement
+        title.SetFillColor(0)
+        title.SetTextAlign(22)
+        title.SetTextFont(42)
+        title.SetBorderSize(0)
+        title.Draw()
+        SetOwnership(title,False)  # avoid going out of scope at return statement
 
     if dirName is not None and moduleName is not None:
         moduleLabel = TPaveText(leftMargin/canvasWidth,
