@@ -60,8 +60,8 @@ def printPortcardMap(csv='csv/cablingmap_fpixphase1_BmO.csv'):
         for x in pcList:
             d = x.split('_')[2][-1]
             p = x.split('_')[3][-1]
-            p = chr(int(p)+64)
-            moduleList = [(m['Official name of position'],m['PC position Mirror'][1],m['PC port']) for m in dictionary if m['PC position Mirror'][0]==d and m['PC position Mirror'][-1]==p]
+            p = chr(int(p)+96)
+            moduleList = [(m['Official name of position'],m['PC position phi'][1],m['PC port']) for m in dictionary if m['PC position phi'][0]==d and m['PC position phi'][-1]==p]
             for m in moduleList:
                 if m[1]=='T':
                     ch = int(m[2])+7
