@@ -39,19 +39,40 @@ def printnametranslation(xmlfilename):
             towrite=row['Official name of position']+'_ROC%s'%str(x)+'         '+tbmcore +'        '+row['FEC position']+'      '+row['mfec']+'     '+row['mfecchannel'] +'     '+row['HubID']+'      '+ '%i'%d +'      '+ str(x) + '      '+row['FED ID']+'       '+ fedch+'     '+str(rocn)+'\n'
             nametranslationfile.write(towrite)
 
-def printportcardmap(xmlfilename):
-    dictionary = getdict(xmlfilename)
-    portcardmapfile=open("ConfigDat/portcardmap.dat","w")
-    portcardmapfile.write("# Portcard             Module                     AOH channel") 
+#def printportcardmap(xmlfilename):
+#    dictionary = getdict(xmlfilename)
+#    portcardmapfile=open("ConfigDat/portcardmap.dat","w")
+#    portcardmapfile.write("# Portcard             Module                     AOH channel") 
+#
+#    for row in dictionary:
+#        fedch=''
+#        fedchs=row['FED channel'].split('/')
+#        if len(fedchs)<2:continue
+#        portcard=list(row['PC position Mirror'])[-1]
+#        print portcard
+#        towrite='FPix_BmO_D1_PRT'+'           '+row['Official name of position']  
 
-    for row in dictionary:
-        fedch=''
-        fedchs=row['FED channel'].split('/')
-        if len(fedchs)<2:continue
-        portcard=list(row['PC position Mirror'])[-1]
-        print portcard
-        towrite='FPix_BmO_D1_PRT'+'           '+row['Official name of position']  
- 
+def printPortcardMap(csv='csv/cablingmap_fpixphase1_BmO.csv'):
+    dictionary = getdict(csv)
+    pcList = ['FPix_BmO_D%(dsk)d_PRT%(prt)d' %locals() for dsk in range(1,4) for prt in range(1,5)]
+    with open('ConfigDat/portcardmap.dat','w') as output:
+        output.write('# Portcard             Module                     AOH channel\n')
+        for x in pcList:
+            d = x.split('_')[2][-1]
+            p = x.split('_')[3][-1]
+            p = chr(int(p)+64)
+            moduleList = [(m['Official name of position'],m['PC position Mirror'][1],m['PC port']) for m in dictionary if m['PC position Mirror'][0]==d and m['PC position Mirror'][-1]==p]
+            for m in moduleList:
+                if m[1]=='T':
+                    ch = int(m[2])+7
+                elif m[1]=='B':
+                    ch = int(m[2])
+                line1 = '{0:23}{1:27}{2:>3}{3:8d}\n'.format(x,m[0],'A',ch)
+                line2 = '{0:23}{1:27}{2:>3}{3:8d}\n'.format(x,m[0],'B',ch)
+                output.write(line1)
+                output.write(line2)
+
+
 def mapfedidPOHbundle(bundlenumber):
     dictionary = getdict('csv/cablingmap_fpixphase1_BmO.csv')
     for row in dictionary:
@@ -207,7 +228,8 @@ def main():
    #printtbm('csv/cablingmap_fpixphase1_BmO.csv')
    #print tbmdelays()
    #print findconfigversions()
-   print findmodule('1299','9')
+   #print findmodule('1299','9')
+   printPortcardMap()
 
 if __name__ == "__main__":
     main()
