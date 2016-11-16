@@ -10,8 +10,8 @@ EXAMPLE:
     > python mkDetConfig.py --fed='1287 1289 1293'
     > python mkDetConfig.py --prt='1TA 1BD 2TB'
     > python mkDetConfig.py --dsk='1 3'
-    > python mkDetConfig.py --exclude='FPix_BpO_D1_BLD6_PNL2_RNG1 FPix_BpO_D1_BLD7_PNL1_RNG1'
-    > python mkDetConfig.py --fed='1290 1291' --prt='1BD 3TA' --exclude='FPix_BpO_D1_BLD6_PNL2_RNG1' # if both fed and prt arguements are provided, the logic is 'AND'.
+    > python mkDetConfig.py --exclude='FPix_BmO_D1_BLD6_PNL2_RNG1 FPix_BmO_D1_BLD7_PNL1_RNG1'
+    > python mkDetConfig.py --fed='1290 1291' --prt='1BD 3TA' --exclude='FPix_BmO_D1_BLD6_PNL2_RNG1' # if both fed and prt arguements are provided, the logic is 'AND'.
 '''
 
 parser = MyParser(epilog=epi)
@@ -66,7 +66,7 @@ def main():
          moduleListByFed=[item['Official name of position'] for item in dictionary if item['FED ID'] in fedlist]
     if opts.prts:
         prtlist = opts.prts.split(' ')
-        moduleListByPrt=[item['Official name of position'] for item in dictionary if item['PC position Mirror'] in prtlist]
+        moduleListByPrt=[item['Official name of position'] for item in dictionary if item['PC position phi'] in prtlist]
     if opts.dsks:
         dsklist = opts.dsks.split(' ')
         moduleListByDsk=[item['Official name of position'] for item in dictionary if len(item['Official name of position'].split('_'))>3 and item['Official name of position'].split('_')[2][-1] in dsklist]

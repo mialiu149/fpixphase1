@@ -2,7 +2,7 @@ Mode: TBMDelayWithScores
 Parameters:
 DoFifo1 yes
 OverrideFifo1Fiber 8
-Dumps yes
+Dumps no
 NoScanOK yes
 Rows:
 61
