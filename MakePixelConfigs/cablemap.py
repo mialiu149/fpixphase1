@@ -6,7 +6,7 @@ import math
 import os
 from itertools import islice
 
-def getdict(filename='csv/cablingmap_fpixphase1_BmI.csv'):
+def getdict(filename='csv/cablingmap_fpixphase1_BmO.csv'):
     rows = []
     with open(filename, mode='r') as infile:
          reader = csv.DictReader(infile)
@@ -39,21 +39,42 @@ def printnametranslation(xmlfilename):
             towrite=row['Official name of position']+'_ROC%s'%str(x)+'         '+tbmcore +'        '+row['FEC position']+'      '+row['mfec']+'     '+row['mfecchannel'] +'     '+row['HubID']+'      '+ '%i'%d +'      '+ str(x) + '      '+row['FED ID']+'       '+ fedch+'     '+str(rocn)+'\n'
             nametranslationfile.write(towrite)
 
-def printportcardmap(xmlfilename):
-    dictionary = getdict(xmlfilename)
-    portcardmapfile=open("ConfigDat/portcardmap.dat","w")
-    portcardmapfile.write("# Portcard             Module                     AOH channel") 
+#def printportcardmap(xmlfilename):
+#    dictionary = getdict(xmlfilename)
+#    portcardmapfile=open("ConfigDat/portcardmap.dat","w")
+#    portcardmapfile.write("# Portcard             Module                     AOH channel") 
+#
+#    for row in dictionary:
+#        fedch=''
+#        fedchs=row['FED channel'].split('/')
+#        if len(fedchs)<2:continue
+#        portcard=list(row['PC position Mirror'])[-1]
+#        print portcard
+#        towrite='FPix_BmO_D1_PRT'+'           '+row['Official name of position']  
 
-    for row in dictionary:
-        fedch=''
-        fedchs=row['FED channel'].split('/')
-        if len(fedchs)<2:continue
-        portcard=list(row['PC position Mirror'])[-1]
-        print portcard
-        towrite='FPix_BpO_D1_PRT'+'           '+row['Official name of position']  
- 
+def printPortcardMap(csv='csv/cablingmap_fpixphase1_BmO.csv'):
+    dictionary = getdict(csv)
+    pcList = ['FPix_BmO_D%(dsk)d_PRT%(prt)d' %locals() for dsk in range(1,4) for prt in range(1,5)]
+    with open('ConfigDat/portcardmap.dat','w') as output:
+        output.write('# Portcard             Module                     AOH channel\n')
+        for x in pcList:
+            d = x.split('_')[2][-1]
+            p = x.split('_')[3][-1]
+            p = chr(int(p)+96)
+            moduleList = [(m['Official name of position'],m['PC position phi'][1],m['PC port']) for m in dictionary if m['PC position phi'][0]==d and m['PC position phi'][-1]==p]
+            for m in moduleList:
+                if m[1]=='T':
+                    ch = int(m[2])+7
+                elif m[1]=='B':
+                    ch = int(m[2])
+                line1 = '{0:23}{1:27}{2:>3}{3:8d}\n'.format(x,m[0],'A',ch)
+                line2 = '{0:23}{1:27}{2:>3}{3:8d}\n'.format(x,m[0],'B',ch)
+                output.write(line1)
+                output.write(line2)
+
+
 def mapfedidPOHbundle(bundlenumber):
-    dictionary = getdict('csv/cablingmap_fpixphase1_BpO.csv')
+    dictionary = getdict('csv/cablingmap_fpixphase1_BmO.csv')
     for row in dictionary:
         if len(row['POH SN'].split('/'))<2:continue
         if bundlenumber is int(row['POH SN'].split('/')[1].strip("0")):
@@ -64,7 +85,7 @@ def mapfedidPOHbundle(bundlenumber):
            break
 
 def mapDOHbundle(bundlenumber):
-    dictionary = getdict('csv/cablingmap_fpixphase1_BpO.csv')
+    dictionary = getdict('csv/cablingmap_fpixphase1_BmO.csv')
     for row in dictionary:
         if len(row['POH SN'].split('/'))<2:continue
         if bundlenumber is int(row['POH SN'].split('/')[1].strip("0")):
@@ -146,7 +167,7 @@ def printtbm(xmlfilename):
         tbmfile.write(towrite)
 
 def findmodule(fed,fedch):
-    dictionary = getdict(filename='csv/cablingmap_fpixphase1_BpO.csv')
+    dictionary = getdict(filename='csv/cablingmap_fpixphase1_BmO.csv')
     modulename = ''
     for item in dictionary:
         if fed in item['FED ID'].split('/') and fedch in item['FED channel'].split('/'):
@@ -201,13 +222,14 @@ def findconfigversions(key=15781):
         print "Could not open file! config key file doesn't exist" 
 def main():
    #printnametranslation('cablingmap_fpixphase1_BmI.csv')
-   #printnametranslation('csv/cablingmap_fpixphase1_BpO.csv')
-   #printportcardmap('csv/cablingmap_fpixphase1_BpO.csv')
-   #printfecconfig('csv/cablingmap_fpixphase1_BpO.csv')
-   #printtbm('csv/cablingmap_fpixphase1_BpO.csv')
+   #printnametranslation('csv/cablingmap_fpixphase1_BmO.csv')
+   #printportcardmap('csv/cablingmap_fpixphase1_BmO.csv')
+   #printfecconfig('csv/cablingmap_fpixphase1_BmO.csv')
+   #printtbm('csv/cablingmap_fpixphase1_BmO.csv')
    #print tbmdelays()
    #print findconfigversions()
-   print findmodule('1299','9')
+   #print findmodule('1299','9')
+   printPortcardMap()
 
 if __name__ == "__main__":
     main()
