@@ -53,7 +53,7 @@ def setAsDefault(configName, version):
 
 
 def main():
-    cableMap_Fn='cablingmap_fpixphase1_BpO.csv'
+    cableMap_Fn='cablingmap_fpixphase1_BmO.csv'
     dictionary = getdict(filename='csv/'+cableMap_Fn)
      
     moduleListByFed = []

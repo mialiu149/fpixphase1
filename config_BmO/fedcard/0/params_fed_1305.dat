@@ -5,9 +5,18 @@ Transparent+scope channel: 1
 PACKET_NB: 1
 Which FMC (lower = 0): 0
 Fitel channel order swapped: 1
+Acquisition mode (1=TBM fifo, 2=Slink fifo, 4=FEROL): 2
+Calibration mode: 1
+Calibration mode num events: 1
+Data type (0=real data, 1=constants, 2=pattern): 0
+TBM trailer mask: 0xff
+TBM trailer mask 2: 0x7
+Private event number: 1
 Timeout checking enabled: 1
 Timeout counter start: 40
 Timeout number OOS threshold: 255
+Event count checking enabled: 1
+Number event count errors before OOS: 255
 Frontend disable backend: 0
 FED Base address                         :0x519
 FEDID Number                             :0x519
