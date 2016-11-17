@@ -66,6 +66,7 @@ def main():
          moduleListByFed=[item['Official name of position'] for item in dictionary if item['FED ID'] in fedlist]
     if opts.prts:
         prtlist = opts.prts.split(' ')
+        prtlist = [x[0]+x[1].upper()+x[2].lower() for x in prtlist]
         moduleListByPrt=[item['Official name of position'] for item in dictionary if item['PC position phi'] in prtlist]
     if opts.dsks:
         dsklist = opts.dsks.split(' ')
