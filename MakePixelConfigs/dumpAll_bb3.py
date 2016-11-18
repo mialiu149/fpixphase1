@@ -144,6 +144,7 @@ max_pcnum = 4
 for pcnum in xrange(min_pcnum,max_pcnum+1):
     print pcnum
 
+    #modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi)]
     modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi) if the_doer.moduleOK(m) and m.portcardnum == pcnum]
 
     for module in modules:

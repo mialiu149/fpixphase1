@@ -222,14 +222,14 @@ def findconfigversions(key=15781):
         print "Could not open file! config key file doesn't exist" 
 def main():
    #printnametranslation('cablingmap_fpixphase1_BmI.csv')
-   #printnametranslation('csv/cablingmap_fpixphase1_BmO.csv')
+   printnametranslation('csv/cablingmap_fpixphase1_BmO.csv')
    #printportcardmap('csv/cablingmap_fpixphase1_BmO.csv')
    #printfecconfig('csv/cablingmap_fpixphase1_BmO.csv')
    #printtbm('csv/cablingmap_fpixphase1_BmO.csv')
    #print tbmdelays()
    #print findconfigversions()
    #print findmodule('1299','9')
-   printPortcardMap()
+   #printPortcardMap()
 
 if __name__ == "__main__":
     main()
