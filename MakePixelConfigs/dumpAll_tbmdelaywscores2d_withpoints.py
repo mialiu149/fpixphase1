@@ -60,6 +60,7 @@ if not os.path.isfile(in_fn):
     raise RuntimeError('no file at %s' % in_fn)
 out_dir = os.path.join(run_dir, 'dump_tbmdelaywscores')
 os.system('mkdir -p %s' % out_dir)
+os.system('chmod a+w %s' %out_dir) 
 
 f = ROOT.TFile(in_fn)
 

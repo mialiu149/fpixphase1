@@ -27,6 +27,7 @@ in_fn = in_fn[0]
 out_dir = os.path.join(run_dir,'dump_bb3')
 if not os.path.isdir(out_dir):
     os.system('mkdir -p %s' %out_dir) 
+    os.system('chmod a+w %s' %out_dir) 
 
 roc_fits_out_fn = os.path.join(out_dir,'bb3_roc_fits.pdf')
 
