@@ -1,5 +1,8 @@
 # fpixphase1
 
+## /config_BmO
+config files for BmO
+
 ## /config_BpO_warm 
 config files for BpO warm operation.
 
@@ -79,6 +82,12 @@ Dumper scripts used for calibration result quick check.
   
   ```bash
   python insertTbmAsDefault.py <tbm run number>
+  ```
+
+  Insert TBMDelayWithScores calibration result into `$PIXELCONFIGURATIONBASE/tbm` and ask to set as default
+  
+  ```bash
+  python insertTbmAsDefault.py <tbm run#> dump
   ```
   
 - *mkDetConfig.py*
