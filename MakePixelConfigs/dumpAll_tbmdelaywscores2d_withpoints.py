@@ -83,6 +83,8 @@ mksE = []
 
 for ikey, key in enumerate(f.GetListOfKeys()):
     obj = key.ReadObj()
+    if obj.GetName().split('_')[2] != 'ScoreOK':
+        continue
     c.cd(ikey % 9 + 1)
     fedN = obj.GetName().split('_')[0]
     fedNum = fedN[3:]
