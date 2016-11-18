@@ -84,7 +84,7 @@ Dumper scripts used for calibration result quick check.
   python insertTbmAsDefault.py <tbm run number>
   ```
 
-  Insert TBMDelayWithScores calibration result into `$PIXELCONFIGURATIONBASE/tbm` and ask to set as default
+  Insert picked calibration result from dumpped folder into `$PIXELCONFIGURATIONBASE/tbm` and ask to set as default
   
   ```bash
   python insertTbmAsDefault.py <tbm run#> dump
