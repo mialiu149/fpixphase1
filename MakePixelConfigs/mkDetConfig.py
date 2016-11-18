@@ -8,7 +8,7 @@ class MyParser(OptionParser):
 epi = '''
 EXAMPLE:
     > python mkDetConfig.py --fed='1287 1289 1293'
-    > python mkDetConfig.py --prt='1TA 1BD 2TB'
+    > python mkDetConfig.py --prt='1TA 1BD 2TB' (use --prt='1Ta 1BDd 2Tb' for BmO and BpI)
     > python mkDetConfig.py --dsk='1 3'
     > python mkDetConfig.py --exclude='FPix_BmO_D1_BLD6_PNL2_RNG1 FPix_BmO_D1_BLD7_PNL1_RNG1'
     > python mkDetConfig.py --fed='1290 1291' --prt='1BD 3TA' --exclude='FPix_BmO_D1_BLD6_PNL2_RNG1' # if both fed and prt arguements are provided, the logic is 'AND'.

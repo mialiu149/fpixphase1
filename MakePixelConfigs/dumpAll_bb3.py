@@ -27,6 +27,7 @@ in_fn = in_fn[0]
 out_dir = os.path.join(run_dir,'dump_bb3')
 if not os.path.isdir(out_dir):
     os.system('mkdir -p %s' %out_dir) 
+    os.system('chmod a+w %s' %out_dir) 
 
 roc_fits_out_fn = os.path.join(out_dir,'bb3_roc_fits.pdf')
 
@@ -144,6 +145,7 @@ max_pcnum = 4
 for pcnum in xrange(min_pcnum,max_pcnum+1):
     print pcnum
 
+    #modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi)]
     modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi) if the_doer.moduleOK(m) and m.portcardnum == pcnum]
 
     for module in modules:
