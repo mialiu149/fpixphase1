@@ -59,7 +59,7 @@ in_fn = os.path.join(run_dir, 'TBMDelay.root')
 if not os.path.isfile(in_fn):
     raise RuntimeError('no file at %s' % in_fn)
 out_dir = os.path.join(run_dir, 'dump_tbmdelaywscores')
-os.system('mkdir -p %s' % out_dir)
+os.system('mkdir -p -m 766 %s' % out_dir)
 
 f = ROOT.TFile(in_fn)
 
@@ -88,22 +88,25 @@ for ikey, key in enumerate(f.GetListOfKeys()):
     c.cd(ikey % 9 + 1)
     fedN = obj.GetName().split('_')[0]
     fedNum = fedN[3:]
+    chORfb = ''
     if 'Ch' in obj.GetName().split('_')[1]:
         chN = obj.GetName().split('_')[1]
+        chORfb = chN
         chNum = str(int(chN[2:]))
         module = findmodule(fedNum, chNum)
     else:
         fbN = obj.GetName().split('_')[1]
+        chORfb = fbN
         chNum = str(int(fbN[2:])*2)
         module = findmodule(fedNum, chNum)
     if module not in moduleONList:
         continue
     
-    h = ROOT.TH2F(fedN+' '+chN+' '+module,'',8,0,8,8,0,8)
+    h = ROOT.TH2F(fedN+' '+chORfb+' '+module,'',8,0,8,8,0,8)
     h.GetXaxis().SetTitle('160 MHz')
     h.GetYaxis().SetTitle('400 MHz')
     h.SetStats(False)
-    h.SetTitle(fedN+' '+chN+' '+module)
+    h.SetTitle(fedN+' '+chORfb+' '+module)
     h.SetMinimum(scaleMin)
     h.SetMaximum(scaleMax)
     
@@ -116,6 +119,12 @@ for ikey, key in enumerate(f.GetListOfKeys()):
 
 colors = array("i",[51+i for i in range(50)])
 ROOT.gStyle.SetPalette(len(colors), colors)
+
+setting_dir = os.path.join(out_dir,'settings')
+os.system('mkdir -p -m 766 %s' % setting_dir)
+cmd = 'cp %s %s' %(os.path.join(run_dir,'TBM_module_FPix*.dat'),setting_dir)
+print cmd
+os.system(cmd)
 
 for index, h in enumerate(hs):
     c.cd(index%9+1)
@@ -167,6 +176,14 @@ for index, h in enumerate(hs):
             mksE.append(ep)
             mksE[-1].Draw('P same') # cross for EYE
             c.Update()
+
+            if 'Fb' in h.GetTitle().split(' ')[1]:
+                pll = int(epx[0]-0.5)<<5 | int(epy[0]-0.5)<<2
+                line = "TBMPLLDelay: %d" %pll
+                if pll != newTBMParam['pll']:
+                    print h.GetTitle()+' '+line
+                cmd = "sed -i '12s/.*/%s/' %s" %(line, os.path.join(setting_dir,tbm_Fn))
+                os.system(cmd)
 
         #lgd = ROOT.TLegend(0.4,0.7,0.9,0.9)
         #lgd.SetBorderSize(0)
