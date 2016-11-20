@@ -37,7 +37,10 @@ class Module:
         
         n = self.internal_name = d['internal naming per Disk']
         n, n2 = n[:-1], n[-1]
-        assert int(n) == self.bld
+        nint = int(n)
+        if HC == 'BmO' or HC == 'BpI':
+            nint = (17 if self.rng==2 else 11)+1-nint
+        assert int(nint) == self.bld
         assert (n2 == 'T' and self.pnl == 2) or (n2 == 'B' and self.pnl == 1)
 
         self.module = d['Module']

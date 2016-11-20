@@ -150,6 +150,9 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
 
     for module in modules:
         #print module.name
+        if module.name in ['FPix_BmO_D2_BLD3_PNL2_RNG1','FPix_BmO_D1_BLD1_PNL1_RNG1']:
+            print 'skip: ',module.name
+            continue
         for label, d in [('raw', raw), ('norm', norm), ('bad', norm)]:
             lists = []
             any_ok = False
