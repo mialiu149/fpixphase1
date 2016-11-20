@@ -39,7 +39,7 @@ def mkNewConfigVersion(configName):
     lastVersion = subdirs[-1]
     print "Last %s version: "%configName, lastVersion
     newVersion = subdirs[-1]+1
-    os.system('mkdir -m 766  %d'%newVersion)
+    os.system('mkdir -m 777  %d'%newVersion)
     os.chdir('%d'%newVersion)
     print "New %s version: "%configName, newVersion
     return newVersion
