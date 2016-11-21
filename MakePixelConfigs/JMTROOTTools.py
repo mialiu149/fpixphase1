@@ -266,8 +266,8 @@ def flat_to_module(label, module_name, lists, xform=None):
 
     Values can be None if skipping desired.
     '''
-
-    assert len(lists) == 16
+    if len(lists)<16: print module_name," : module has less than 16 ROCS!!"
+    #assert len(lists) == 16
     hs = []
     for iroc,l in enumerate(lists):
         roc = module_name + '_ROC' + str(iroc)

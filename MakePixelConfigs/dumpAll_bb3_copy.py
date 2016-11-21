@@ -148,7 +148,7 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
     modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi) if the_doer.moduleOK(m) and m.portcardnum == pcnum]
 
     for module in modules:
-        #print module.name
+        if 'FPix_BmO_D1_BLD1_PNL1_RNG1'in module.name: continue
         for label, d in [('raw', raw), ('norm', norm), ('bad', norm)]:
             lists = []
             any_ok = False
