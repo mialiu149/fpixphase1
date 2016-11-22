@@ -156,22 +156,23 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
     modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi) if the_doer.moduleOK(m) and m.portcardnum == pcnum]
 
     for module in modules:
-        #print module.name
-        if module.name in ['FPix_BmO_D2_BLD3_PNL2_RNG1','FPix_BmO_D1_BLD1_PNL1_RNG1']:
-            print 'skip: ',module.name
-            continue
         for label, d in [('raw', raw), ('norm', norm), ('bad', norm)]:
             lists = []
-            any_ok = False
+            blankROC = 0
             for i in xrange(16):
                 roc = module.name + '_ROC' + str(i)
                 if not d.has_key(roc):
+                    blankROC += 1
+                    lists.append([0.]*4160)
                     continue
-                any_ok = True
                 lists.append(d[roc])
-
-            if not any_ok:
+            
+            if blankROC == 16:
                 continue
+            assert(len(lists)==16)
+            if blankROC != 0:
+                print module.name+" has "+str(blankROC)+" blank ROCs!"
+
 
             def xform(label, module_name, rocnum, col, row, val):
                 global bad_counts
