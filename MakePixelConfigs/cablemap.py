@@ -6,7 +6,7 @@ import math
 import os
 from itertools import islice
 
-def getdict(filename='csv/cablingmap_fpixphase1_BmO.csv'):
+def getdict(filename='csv/cablingmap_fpixphase1_BpI.csv'):
     rows = []
     with open(filename, mode='r') as infile:
          reader = csv.DictReader(infile)
@@ -52,9 +52,9 @@ def printnametranslation(xmlfilename):
 #        print portcard
 #        towrite='FPix_BmO_D1_PRT'+'           '+row['Official name of position']  
 
-def printPortcardMap(csv='csv/cablingmap_fpixphase1_BmO.csv'):
+def printPortcardMap(csv='csv/cablingmap_fpixphase1_BpI.csv'):
     dictionary = getdict(csv)
-    pcList = ['FPix_BmO_D%(dsk)d_PRT%(prt)d' %locals() for dsk in range(1,4) for prt in range(1,5)]
+    pcList = ['FPix_BpI_D%(dsk)d_PRT%(prt)d' %locals() for dsk in range(1,4) for prt in range(1,5)]
     with open('ConfigDat/portcardmap.dat','w') as output:
         output.write('# Portcard             Module                     AOH channel\n')
         for x in pcList:
@@ -167,7 +167,7 @@ def printtbm(xmlfilename):
         tbmfile.write(towrite)
 
 def findmodule(fed,fedch):
-    dictionary = getdict(filename='csv/cablingmap_fpixphase1_BmO.csv')
+    dictionary = getdict(filename='csv/cablingmap_fpixphase1_BpI.csv')
     modulename = ''
     for item in dictionary:
         if fed in item['FED ID'].split('/') and fedch in item['FED channel'].split('/'):
@@ -222,7 +222,7 @@ def findconfigversions(key=15781):
         print "Could not open file! config key file doesn't exist" 
 def main():
    #printnametranslation('cablingmap_fpixphase1_BmI.csv')
-   printnametranslation('csv/cablingmap_fpixphase1_BmO.csv')
+   #printnametranslation('csv/cablingmap_fpixphase1_BmO.csv')
    #printportcardmap('csv/cablingmap_fpixphase1_BmO.csv')
    #printfecconfig('csv/cablingmap_fpixphase1_BmO.csv')
    #printtbm('csv/cablingmap_fpixphase1_BmO.csv')
@@ -233,5 +233,3 @@ def main():
 
 if __name__ == "__main__":
     main()
- 
-

@@ -4,11 +4,16 @@ set_style(True)
 
 run = run_from_argv()
 run_dir = run_dir(run)
-in_fn = glob(os.path.join(run_dir, 'SCurve_Fed_*_Run_%i.root' % run))
+in_fn = glob(os.path.join(run_dir, 'total.root'))
 if not in_fn:
-    raise RuntimeError('need to make the root file: /nfshome0/pixelpilot/build/TriDAS/pixel/jmt/scurve.sh %i' % run)
-if len(in_fn) > 1:
-    raise RuntimeError('too many root files')
+    root_flist = glob(os.path.join(run_dir,'SCurve_Fed_*_Run_%s.root'%run)) 
+    if not root_flist:
+        raise RuntimeError('need to run analysis first!')
+    out_root = os.path.join(run_dir,'total.root')
+    args = ' '.join(root_flist)
+    cmd = 'hadd %s %s' %(out_root, args)
+    os.system(cmd)
+in_fn = glob(os.path.join(run_dir, 'total.root'))
 in_fn = in_fn[0]
 out_dir = os.path.join(run_dir,'dump_scurve')
 if not os.path.isdir(out_dir):

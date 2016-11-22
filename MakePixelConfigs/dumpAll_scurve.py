@@ -9,11 +9,18 @@ set_style(light=True)
 
 run = run_from_argv()
 run_dir = run_dir(run)
-in_fn = glob(os.path.join(run_dir, 'TrimOutputFile_Fed_*.dat'))
+
+in_fn = glob(os.path.join(run_dir, 'total.dat'))
 if not in_fn:
-    raise RuntimeError('Generate root file first!')
-if len(in_fn)>1:
-    raise RuntimeError('too many .dat files, check please!')
+    trim_flist = glob(os.path.join(run_dir,'TrimOutputFile_Fed_*.dat'))
+    if not trim_flist:
+        raise Runtimeerror('Run analysis first!')
+    out_dat = os.path.join(run_dir,'total.dat')
+    args = ' '.join(trim_flist)
+    cmd  = 'cat %s > %s'%(args,out_dat)
+    os.system(cmd)
+
+in_fn = glob(os.path.join(run_dir, 'total.dat'))
 in_fn = in_fn[0]
 out_dir = os.path.join(run_dir,'dump_scurve')
 if not os.path.isdir(out_dir):

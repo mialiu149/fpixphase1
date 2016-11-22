@@ -59,7 +59,7 @@ in_fn = os.path.join(run_dir, 'TBMDelay.root')
 if not os.path.isfile(in_fn):
     raise RuntimeError('no file at %s' % in_fn)
 out_dir = os.path.join(run_dir, 'dump_tbmdelaywscores')
-os.system('mkdir -p -m 766 %s' % out_dir)
+os.system('mkdir -p -m 777 %s' % out_dir)
 
 f = ROOT.TFile(in_fn)
 
@@ -121,7 +121,7 @@ colors = array("i",[51+i for i in range(50)])
 ROOT.gStyle.SetPalette(len(colors), colors)
 
 setting_dir = os.path.join(out_dir,'settings')
-os.system('mkdir -p -m 766 %s' % setting_dir)
+os.system('mkdir -p -m 777 %s' % setting_dir)
 cmd = 'cp %s %s' %(os.path.join(run_dir,'TBM_module_FPix*.dat'),setting_dir)
 print cmd
 os.system(cmd)

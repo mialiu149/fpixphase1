@@ -18,11 +18,18 @@ ROOT.gStyle.SetOptFit(1111)
 
 run = run_from_argv()
 run_dir = run_dir(run)
-in_fn = glob(os.path.join(run_dir, 'TrimOutputFile_Fed_*.dat'))
+
+in_fn = glob(os.path.join(run_dir, 'total.dat'))
 if not in_fn:
-    raise RuntimeError('Generate root file first!')
-if len(in_fn)>1:
-    raise RuntimeError('too many .dat files, check please!')
+    trim_flist = glob(os.path.join(run_dir,'TrimOutputFile_Fed_*.dat'))
+    if not trim_flist:
+        raise RuntimeError('Run analysis first!')
+    out_dat = os.path.join(run_dir,'total.dat')
+    args = ' '.join(trim_flist)
+    cmd  = 'cat %s > %s'%(args,out_dat)
+    os.system(cmd)
+
+in_fn = glob(os.path.join(run_dir, 'total.dat'))
 in_fn = in_fn[0]
 out_dir = os.path.join(run_dir,'dump_bb3')
 if not os.path.isdir(out_dir):
@@ -149,19 +156,23 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
     modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi) if the_doer.moduleOK(m) and m.portcardnum == pcnum]
 
     for module in modules:
-        #print module.name
         for label, d in [('raw', raw), ('norm', norm), ('bad', norm)]:
             lists = []
-            any_ok = False
+            blankROC = 0
             for i in xrange(16):
                 roc = module.name + '_ROC' + str(i)
                 if not d.has_key(roc):
+                    blankROC += 1
+                    lists.append([0.]*4160)
                     continue
-                any_ok = True
                 lists.append(d[roc])
-
-            if not any_ok:
+            
+            if blankROC == 16:
                 continue
+            assert(len(lists)==16)
+            if blankROC != 0:
+                print module.name+" has "+str(blankROC)+" blank ROCs!"
+
 
             def xform(label, module_name, rocnum, col, row, val):
                 global bad_counts

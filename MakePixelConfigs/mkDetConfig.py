@@ -37,7 +37,7 @@ def mkNewConfigVersion(configName):
     subdirs = [int(x) for x in os.walk('.').next()[1]]
     subdirs.sort()
     lastVersion = subdirs[-1]
-    print "Last %s version: "%configName, lastVersion
+    #print "Last %s version: "%configName, lastVersion
     newVersion = subdirs[-1]+1
     os.system('mkdir -m 777  %d'%newVersion)
     os.chdir('%d'%newVersion)
@@ -53,7 +53,7 @@ def setAsDefault(configName, version):
 
 
 def main():
-    cableMap_Fn='cablingmap_fpixphase1_BmO.csv'
+    cableMap_Fn='cablingmap_fpixphase1_BpI.csv'
     dictionary = getdict(filename='csv/'+cableMap_Fn)
      
     moduleListByFed = []

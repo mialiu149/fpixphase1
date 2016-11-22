@@ -1,5 +1,6 @@
 import os,sys
 from JMTTools import *
+from cablemap import findconfigversions, findkey
 from mkDetConfig import *
 
 
@@ -8,12 +9,16 @@ run_dir = os.path.join(POS_OUTPUT_DIRS,'Run_0','Run_%d'%run_num)
 config='tbm'
 
 tbmNewVersion = mkNewConfigVersion(config)
-tbmOldDir = os.path.join(PIXELCONFIGURATIONBASE,config,str(tbmNewVersion-1))
+configDict = findconfigversions(findkey(run_dir))
+tbmOldVersion = configDict['tbm']
+tbmOldDir = os.path.join(PIXELCONFIGURATIONBASE,config,str(tbmOldVersion))
 tbmNewDir = os.path.join(PIXELCONFIGURATIONBASE,config,str(tbmNewVersion))
+tbmEyeDir = os.path.join(run_dir,'dump_tbmdelaywscores','settings')
+tbmPosDir = run_dir
 if 'dump' in sys.argv:
-    target_dir = os.path.join(run_dir,'dump_tbmdelaywscores','settings')
+    target_dir = tbmEyeDir
 else:
-    target_dir = run_dir
+    target_dir = tbmPosDir
 
 tbmDatList = glob(os.path.join(target_dir,'TBM_module_FPix*.dat'))
 if len(tbmDatList)==0:
