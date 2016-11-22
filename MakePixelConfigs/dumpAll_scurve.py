@@ -1,6 +1,6 @@
 from JMTTools import *
 from JMTROOTTools import *
-from trysomething_write_other_hc_configs import cable_map_parser, HC, module_sorter_by_portcard_phi
+from write_other_hc_configs import cable_map_parser, HC, module_sorter_by_portcard_phi
 set_style(light=True)
 
 #if len(sys.argv) < 2:
