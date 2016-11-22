@@ -52,9 +52,9 @@ def printnametranslation(xmlfilename):
 #        print portcard
 #        towrite='FPix_BmO_D1_PRT'+'           '+row['Official name of position']  
 
-def printPortcardMap(csv='csv/cablingmap_fpixphase1_BmO.csv'):
+def printPortcardMap(csv='csv/cablingmap_fpixphase1_BpI.csv'):
     dictionary = getdict(csv)
-    pcList = ['FPix_BmO_D%(dsk)d_PRT%(prt)d' %locals() for dsk in range(1,4) for prt in range(1,5)]
+    pcList = ['FPix_BpI_D%(dsk)d_PRT%(prt)d' %locals() for dsk in range(1,4) for prt in range(1,5)]
     with open('ConfigDat/portcardmap.dat','w') as output:
         output.write('# Portcard             Module                     AOH channel\n')
         for x in pcList:
@@ -222,14 +222,14 @@ def findconfigversions(key=15781):
         print "Could not open file! config key file doesn't exist" 
 def main():
    #printnametranslation('cablingmap_fpixphase1_BmI.csv')
-   printnametranslation('csv/cablingmap_fpixphase1_BmO.csv')
+   #printnametranslation('csv/cablingmap_fpixphase1_BmO.csv')
    #printportcardmap('csv/cablingmap_fpixphase1_BmO.csv')
    #printfecconfig('csv/cablingmap_fpixphase1_BmO.csv')
    #printtbm('csv/cablingmap_fpixphase1_BmO.csv')
    #print tbmdelays()
    #print findconfigversions()
    #print findmodule('1299','9')
-   #printPortcardMap()
+   printPortcardMap()
 
 if __name__ == "__main__":
     main()
