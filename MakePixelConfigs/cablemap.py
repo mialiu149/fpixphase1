@@ -6,7 +6,7 @@ import math
 import os
 from itertools import islice
 
-def getdict(filename='csv/cablingmap_fpixphase1_BmO.csv'):
+def getdict(filename='csv/cablingmap_fpixphase1_BpI.csv'):
     rows = []
     with open(filename, mode='r') as infile:
          reader = csv.DictReader(infile)
@@ -167,7 +167,7 @@ def printtbm(xmlfilename):
         tbmfile.write(towrite)
 
 def findmodule(fed,fedch):
-    dictionary = getdict(filename='csv/cablingmap_fpixphase1_BmO.csv')
+    dictionary = getdict(filename='csv/cablingmap_fpixphase1_BpI.csv')
     modulename = ''
     for item in dictionary:
         if fed in item['FED ID'].split('/') and fedch in item['FED channel'].split('/'):
@@ -229,9 +229,7 @@ def main():
    #print tbmdelays()
    #print findconfigversions()
    #print findmodule('1299','9')
-   printPortcardMap()
+   #printPortcardMap()
 
 if __name__ == "__main__":
     main()
- 
-
