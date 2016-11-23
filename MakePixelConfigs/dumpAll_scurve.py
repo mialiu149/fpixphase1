@@ -62,15 +62,16 @@ for module in cable_map.modules_from_rocs(td.ls.keys(), module_sorter_by_portcar
         thresholdses.append(thresholds)
         widthses.append(widths)
 
+    title = module.portcard+' '+module.portcard_phi[1]+' '+str(module.portcard_connection)+'   '+module.name+'   '+module.module+'  '+module.internal_name
     h_thresholdses = flat_to_module('thresholds', module.name, thresholdses)
-    h_thresholds, fc, pt = fnal_pixel_plot(h_thresholdses, module.name, module.name, (20, 50), threshold_c)
+    h_thresholds, fc, pt = fnal_pixel_plot(h_thresholdses, module.name, title, (20, 50), threshold_c)
     if threshold_c is None:
         threshold_c = fc
         threshold_c.SaveAs(threshold_out_fn + '[')
     threshold_c.SaveAs(threshold_out_fn)
 
     h_widthses = flat_to_module('widths', module.name, widthses)
-    h_widths, fc, pt = fnal_pixel_plot(h_widthses, module.name, module.name, (0, 10), width_c)
+    h_widths, fc, pt = fnal_pixel_plot(h_widthses, module.name, title, (0, 10), width_c)
     if width_c is None:
         width_c = fc
         width_c.SaveAs(width_out_fn + '[')
