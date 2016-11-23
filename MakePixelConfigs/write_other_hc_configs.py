@@ -48,6 +48,7 @@ class Module:
         assert(0 <= self.hubid <= 15)
 
         hj = self.portcard_hj = d['PC position Mirror']
+        self.portcard_phi = d['PC position phi']
         assert int(hj[0]) == self.disk
         assert hj[1] in 'TB'
         assert hj[2] in 'ABCD'
@@ -119,8 +120,12 @@ class Module:
         return 'ABCD'.index(self.portcard_hj[2]) + 1
 
     @property
+    def portcardnum_phi(self):
+        return 'abcd'.index(self.portcard_phi[2]) +1
+
+    @property
     def portcard(self):
-        return 'FPix_%s_D%i_PRT%i' % (self.hc, self.disk, self.portcardnum)
+        return 'FPix_%s_D%i_PRT%i' % (self.hc, self.disk, self.portcardnum_phi)
 
     @property
     def fec_ip(self):

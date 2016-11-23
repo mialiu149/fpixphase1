@@ -201,7 +201,7 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
             elif label == 'norm':
                 z_range = (-5, 6.1)
 
-            title = label + '   ' + m.portcard + ' ' + m.portcard_hj[1] + ' ' + str(m.portcard_connection) + '   ' + module.name + '   ' + module.module + '   ' + module.internal_name
+            title = label + '   ' + module.portcard + ' ' + module.portcard_phi[1] + ' ' + str(module.portcard_connection) + '   ' + module.name + '   ' + module.module + '   ' + module.internal_name
 
             h, fc, pt = fnal_pixel_plot(hs, module.name, title, z_range=z_range, existing_c=map_c)
             #fc.SaveAs(module.name + '_' + label + '.pdf')
