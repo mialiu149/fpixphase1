@@ -1,0 +1,5 @@
+#FED number     crate     vme base address     type    URI
+1294	1	1294	CTA	chtcp-2.0://cmsuppixch002:10203?target=HCtestFED1:50001
+1295	1	1295	CTA	chtcp-2.0://cmsuppixch002:10203?target=HCtestFED2:50001
+1296	1	1296	CTA	chtcp-2.0://cmsuppixch002:10203?target=HCtestFED3:50001
+1297	1	1297	CTA	chtcp-2.0://cmsuppixch002:10203?target=HCtestFED4:50001

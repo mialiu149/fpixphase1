@@ -1,5 +1,8 @@
 # fpixphase1
 
+## /config_BpI
+config files for BpI
+
 ## /config_BmO
 config files for BmO
 
@@ -49,7 +52,13 @@ Dumper scripts used for calibration result quick check.
   ```
   
 - SCurve
-  Generate root file first, then
+  
+  **step1** Generate root file first,
+  
+  ```bash
+  source runscurve.sh <run num> # one fed per process, comment out feds you don't need
+  ```
+  **step2** then
   
   ```bash
   python dumpAll_scurve_simple.py <scurve run number> # giving 1D summary plot
@@ -57,10 +66,21 @@ Dumper scripts used for calibration result quick check.
   ```
   
 - BB
+  
+  **Step1**
+  
   ```bash
   python bb3Calib.py <bb run number>
   ```
-  generate root file, then
+  
+  **step2** generate root file,
+  
+  ```bash
+  source runscurve.sh <run num> # one fed per process, comment out feds you don't need
+  ```
+ 
+  **steps3** then
+  
   ```bash
   python dumpAll_bb3_simple.py <bb run number> # giving 1D summary plot
   python dumpAll_bb3.py <bb run number> # choose the right HC you want to analyze from line#5-8 in write_other_hc_configs.py
