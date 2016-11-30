@@ -1,4 +1,4 @@
-import os
+import os,sys
 from cablemap import *
 from optparse import OptionParser
 
@@ -7,14 +7,15 @@ class MyParser(OptionParser):
         return self.epilog
 epi = '''
 EXAMPLE:
-    > python mkDetConfig.py --fed='1287 1289 1293'
-    > python mkDetConfig.py --prt='1TA 1BD 2TB' (use --prt='1Ta 1BDd 2Tb' for BmO and BpI)
-    > python mkDetConfig.py --dsk='1 3'
-    > python mkDetConfig.py --exclude='FPix_BmO_D1_BLD6_PNL2_RNG1 FPix_BmO_D1_BLD7_PNL1_RNG1'
-    > python mkDetConfig.py --fed='1290 1291' --prt='1BD 3TA' --exclude='FPix_BmO_D1_BLD6_PNL2_RNG1' # if both fed and prt arguements are provided, the logic is 'AND'.
+    > python mkDetConfig.py --hc='BmO' --fed='1287 1289 1293'
+    > python mkDetConfig.py --hc='BmO' --prt='1TA 1BD 2TB' (use --prt='1Ta 1BDd 2Tb' for BmO and BpI)
+    > python mkDetConfig.py --hc='BmO' --dsk='1 3'
+    > python mkDetConfig.py --hc='BmO' --exclude='FPix_BmO_D1_BLD6_PNL2_RNG1 FPix_BmO_D1_BLD7_PNL1_RNG1'
+    > python mkDetConfig.py --hc='BmO' --fed='1290 1291' --prt='1BD 3TA' --exclude='FPix_BmO_D1_BLD6_PNL2_RNG1' # if both fed and prt arguements are provided, the logic is 'AND'.
 '''
 
 parser = MyParser(epilog=epi)
+parser.add_option('','--hc',dest='hcs',help='Input which HC.')
 parser.add_option('','--fed',dest='feds',help='Input fed list as string.')
 parser.add_option('','--prt',dest='prts',help='Input portcard list as string.')
 parser.add_option('','--dsk',dest='dsks',help='Input disk list as string')
@@ -53,7 +54,13 @@ def setAsDefault(configName, version):
 
 
 def main():
-    cableMap_Fn='cablingmap_fpixphase1_BpI.csv'
+    if not opts.hcs: 
+       print "please input a hc name"
+       sys.exit(1)
+    configBaseDir = os.environ['PIXELCONFIGURATIONBASE']
+    if opts.hcs not in configBaseDir: print "your hc name doesn't match what's in PIXELCONFIGURATIONBASE, did you resource startanalysistab.sh?"
+
+    cableMap_Fn='cablingmap_fpixphase1_BmO.csv'.replace('BmO',opts.hcs)
     dictionary = getdict(filename='csv/'+cableMap_Fn)
      
     moduleListByFed = []
