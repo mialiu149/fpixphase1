@@ -54,7 +54,7 @@ def printnametranslation(xmlfilename):
 
 def printPortcardMap(csv='csv/cablingmap_fpixphase1_BpI.csv'):
     dictionary = getdict(csv)
-    pcList = ['FPix_BpI_D%(dsk)d_PRT%(prt)d' %locals() for dsk in range(1,4) for prt in range(1,5)]
+    pcList = ['FPix_BpI_D%(dsk)d_PRT%(prt)d' %locals() for dsk in range(2,4) for prt in range(1,5)]
     with open('ConfigDat/portcardmap.dat','w') as output:
         output.write('# Portcard             Module                     AOH channel\n')
         for x in pcList:
@@ -167,7 +167,7 @@ def printtbm(xmlfilename):
         tbmfile.write(towrite)
 
 def findmodule(fed,fedch):
-    dictionary = getdict(filename='csv/cablingmap_fpixphase1_BpI.csv')
+    dictionary = getdict(filename='csv/cablingmap_fpixphase1_BpO.csv')
     modulename = ''
     for item in dictionary:
         if fed in item['FED ID'].split('/') and fedch in item['FED channel'].split('/'):
@@ -229,7 +229,7 @@ def main():
    #print tbmdelays()
    #print findconfigversions()
    #print findmodule('1299','9')
-   #printPortcardMap()
+   printPortcardMap()
 
 if __name__ == "__main__":
     main()

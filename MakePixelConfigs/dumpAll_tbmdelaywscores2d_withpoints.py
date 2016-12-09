@@ -74,7 +74,7 @@ pdf_fn = os.path.join(out_dir, '2d_pts.pdf')
 c.Print(pdf_fn + '[')
 
 scaleMax = 200
-scaleMin = 197
+scaleMin = 190
 hs = []
 mksN = []
 mksO = []

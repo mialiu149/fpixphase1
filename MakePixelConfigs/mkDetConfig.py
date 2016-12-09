@@ -55,12 +55,12 @@ def setAsDefault(configName, version):
 
 def main():
     if not opts.hcs: 
-       print "please input a hc name"
+       print "please input a hc name this way: --hc='BmO' (for example)"
        sys.exit(1)
     configBaseDir = os.environ['PIXELCONFIGURATIONBASE']
-    if opts.hcs not in configBaseDir: print "your hc name doesn't match what's in PIXELCONFIGURATIONBASE, did you resource startanalysistab.sh?"
+    if opts.hcs not in configBaseDir: print "your hc name doesn't match what's in PIXELCONFIGURATIONBASE, did you resource startanalysistab.sh to switch to another hc?"
 
-    cableMap_Fn='cablingmap_fpixphase1_BmO.csv'.replace('BmO',opts.hcs)
+    cableMap_Fn='cablingmap_fpixphase1_BpO.csv'.replace('BmO',opts.hcs)
     dictionary = getdict(filename='csv/'+cableMap_Fn)
      
     moduleListByFed = []

@@ -4,8 +4,9 @@ from cablemap import findconfigversions, findkey
 from mkDetConfig import *
 
 
-run_num = run_from_argv()
-run_dir = os.path.join(POS_OUTPUT_DIRS,'Run_0','Run_%d'%run_num)
+#run_num = run_from_argv()
+#run_dir = os.path.join(POS_OUTPUT_DIRS,'Run_1000','Run_%d'%run_num)
+run_dir = run_dir_from_argv()
 config='tbm'
 
 tbmNewVersion = mkNewConfigVersion(config)
