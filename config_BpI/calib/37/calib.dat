@@ -1,0 +1,12 @@
+Mode: CalDelCalibration
+Rows:
+20
+Cols:
+20
+VcalLow
+Scan: CalDel 0 255 4
+Scan: WBC 98 107 1
+Set: Vcal 200
+Repeat: 5
+Rocs:
+all

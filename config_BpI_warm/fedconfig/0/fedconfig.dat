@@ -1,0 +1,8 @@
+#FED number     crate     vme base address     type    URI
+1280	1	1280	CTA	chtcp-2.0://localhost:10203?target=HCtestFED7:50001
+1281	1	1281	CTA	chtcp-2.0://localhost:10203?target=HCtestFED6:50001
+1282	1	1282	CTA	chtcp-2.0://localhost:10203?target=HCtestFED5:50001
+1283	1	1283	CTA	chtcp-2.0://localhost:10203?target=HCtestFED4:50001
+1284	1	1284	CTA	chtcp-2.0://localhost:10203?target=HCtestFED3:50001
+1285	1	1285	CTA	chtcp-2.0://localhost:10203?target=HCtestFED2:50001
+1286	1	1286	CTA	chtcp-2.0://localhost:10203?target=HCtestFED1:50001

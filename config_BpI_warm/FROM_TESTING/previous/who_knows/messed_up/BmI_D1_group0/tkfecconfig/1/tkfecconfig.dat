@@ -1,0 +1,2 @@
+#TKFEC ID     crate     VME/PCI    slot/address
+tkfec1          1         CTA        chtcp-2.0://cmsuppixch002:10203?target=HCtestTkFEC1:50001
