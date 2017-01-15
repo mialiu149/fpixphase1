@@ -1,0 +1,12 @@
+Mode: ThresholdCalDelay
+Rows:
+20  | 10 
+Cols:
+20  | 10
+VcalLow
+Scan: VcThr 0 160 8
+Scan: Vana 40 140 8
+Set: Vcal 200
+Repeat: 2
+Rocs:
+all

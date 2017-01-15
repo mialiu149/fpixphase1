@@ -1,0 +1,12 @@
+Mode: VcThrCalibration
+Rows:
+10 | 20
+Cols:
+10 | 20
+VcalLow
+Scan: Vana 40 140 8
+Scan: VcThr 0 200 8
+Set: Vcal 160
+Repeat: 10
+Rocs:
+all

@@ -1,0 +1,14 @@
+Mode: VcThrCalibration
+Parameters:
+Fraction 0.5
+Rows:
+10 | 20
+Cols:
+10 | 20
+VcalLow
+Scan: WBC 99 101 1
+Scan: VcThr 0 200 3
+Set: Vcal 80
+Repeat: 25
+Rocs:
+all

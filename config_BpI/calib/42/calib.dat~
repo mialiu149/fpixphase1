@@ -1,0 +1,16 @@
+Mode: SCurve
+Rows:
+0 | 9 |
+18 | 27 |
+36 | 45 |
+54 | 63 |
+72
+Cols:
+3 13 26 | 39 1 14 |
+27 40 2
+VcalLow
+Scan: Vcal 10 160 1
+Scan: WBC 102 102 1
+Repeat:
+15
+ToCalibrate: + all
