@@ -1,8 +1,8 @@
 Mode: ThresholdCalDelay
 Rows:
-20
+20  | 10 
 Cols:
-20
+20  | 10
 VcalLow
 Scan: VcThr 0 160 8
 Scan: CalDel 0 255 8

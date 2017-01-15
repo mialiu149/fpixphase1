@@ -1,0 +1,13 @@
+Mode: Readbacker
+Parameters:
+ScanVana yes
+NPoints 20
+Rows:
+20
+Cols:
+20
+VcalHigh
+Repeat:
+1
+Rocs:
+all
