@@ -1,2 +1,0 @@
-# crate  uriT1                                                      uriT2                                                 slotMask                 calBX  L1ADelay  NewWay  VerifyL1A   [addressT1, addressT2 columns here if you want, otherwise assumed to use system amc13 etc]
-  1      chtcp-2.0://cmsuppixch002:10203?target=HCamc13T1:50001          chtcp-2.0://cmsuppixch002:10203?target=HCamc13T2:50001     1-12                     381    105       y       y
