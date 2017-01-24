@@ -3,13 +3,13 @@ Parameters:
 DoFifo1 yes
 Dumps no 
 NoScanOK yes
-CheckReadback yes
+CheckReadback no
 HeadersOnly no
-OrChannels yes
+OrChannels no
 Rows:
-61
+9 
 Cols:
-21
+3
 VcalLow
 Scan: TBMPLL 0 255 4
 Set: Vcal 200

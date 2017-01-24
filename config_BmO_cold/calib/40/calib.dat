@@ -1,0 +1,18 @@
+Mode: TBMDelayWithScores
+Parameters:
+DoFifo1 yes
+Dumps no 
+NoScanOK yes
+CheckReadback no
+HeadersOnly yes
+OrChannels yes
+Rows:
+9 
+Cols:
+3
+VcalLow
+Scan: TBMPLL 0 255 4
+Set: Vcal 200
+Repeat: 200
+Rocs:
+all
