@@ -1,0 +1,17 @@
+Mode: TBMDelay
+Parameters:
+OnlyFIFO1 yes
+OnlyFIFO3 yes
+DumpFIFOs yes
+CycleFIFO2Channels no
+NoScanOK yes
+Rows:
+60
+Cols:
+20
+VcalLow
+Scan: TBMPLL 196 220 4
+Set: Vcal 100
+Repeat: 10
+Rocs:
+all

@@ -16,7 +16,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        144
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC1
@@ -37,7 +37,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        143
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC2
@@ -58,7 +58,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        141
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC3
@@ -79,7 +79,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        116
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC4
@@ -100,7 +100,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        154
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC5
@@ -121,7 +121,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        132
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC6
@@ -142,7 +142,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        136
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC7
@@ -163,7 +163,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        144
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC8
@@ -184,7 +184,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        150
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC9
@@ -205,7 +205,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        155
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC10
@@ -226,7 +226,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        142
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC11
@@ -247,7 +247,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        171
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC12
@@ -268,7 +268,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        154
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC13
@@ -289,7 +289,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        130
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC14
@@ -310,7 +310,7 @@ VIColOr:       100
 Vcal:          200
 CalDel:        149
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12
 ROC:           FPix_BpI_D1_BLD10_PNL2_RNG2_ROC15
@@ -331,6 +331,6 @@ VIColOr:       100
 Vcal:          200
 CalDel:        139
 TempRange:     61
-WBC:           100
+WBC:           103
 ChipContReg:   0
 Readback:      12

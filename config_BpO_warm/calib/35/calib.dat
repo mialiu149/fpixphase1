@@ -1,18 +1,14 @@
-Mode: TBMDelayWithScores
+Mode: CalDelCalibration
 Parameters:
-DoFifo1 yes
-Dumps no 
-NoScanOK yes
-CheckReadback no
-HeadersOnly yes
-OrChannels yes
+Fraction 0.6
 Rows:
-61
+11  | 21
 Cols:
-21
+11  | 21
 VcalLow
-Scan: TBMPLL 0 255 4
+Scan: CalDel 0 255 2
+Scan: WBC 102 104 1
 Set: Vcal 200
-Repeat: 200
+Repeat: 10
 Rocs:
 all

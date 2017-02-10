@@ -6,9 +6,9 @@ Rows:
 Cols:
 11  | 21
 VcalLow
-Scan: CalDel 0 255 2
-Scan: WBC 99 101 1
-Set: Vcal 50
+Scan: CalDel 0 255 3
+Scan: WBC 102 104 1
+Set: Vcal 70
 Repeat: 10
 Rocs:
 all
