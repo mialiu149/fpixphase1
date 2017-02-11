@@ -31,7 +31,7 @@ def CountDeadPixels (maxDeadPixels, outfile, excludedrocs, prePixelAliveRun):
 
     prePixelAliveRunPath = '%s/Run_%d/Run_%d/' % (rundir,runfolder(run),run)
     preDeadPixelFile =\
-    glob.glob(os.path.join(prePixelAliveRunPath,'dead_pixels.txt'))
+    glob.glob(os.path.join(prePixelAliveRunPath,'dump_pixelalive','dead_pixels.txt'))
     if len(preDeadPixelFile) != 1:
         raise RuntimeError("No pre-pixelalive dead pixel file found!")
     preDeadPixelFile = preDeadPixelFile[0]
