@@ -344,9 +344,11 @@ parser.add_option("","--makeNewDac",dest="makeNewDac",type="int",default=1,help=
 
 # --- Do some sanity checks before starting...
 
-# --- Check that all relevant arguments (run, key, iteration) are passed
-if not options.run or  not options.key  or options.iteration < 0:
-    sys.exit('Usage: PixelAliveAnalysisForThr.py -r <run> -k <key> -i <iteration>. The first iteration must be 0. \n Exiting.')
+# --- Check that all relevant arguments (run, key, iteration, prePixelAliveRun) are passed
+if not options.run or not options.key  or options.iteration < 0 \
+                   or not options.prePixelAliveRun:
+    sys.exit('Usage: PixelAliveAnalysisForThr.py -r <run> -k <key> -p\
+             <prePixelAliveRun> -i <iteration>. The first iteration must be 0. \n Exiting.')
 
 # --- Check that the script is run from PixelAnalysisTools/test directory
 thisdir = os.getcwd()
