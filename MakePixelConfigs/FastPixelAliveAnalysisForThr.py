@@ -10,7 +10,7 @@ from ROOT import *
 import shutil
 import glob
 import itertools
-from itertools import islice
+#  from itertools import islice
 import browseCalibFiles
 
 #pixelAnalysisExe   = './bin/linux/x86_64_slc5/PixelAnalysis.exe'
@@ -29,9 +29,10 @@ def RunPixelAliveAnalysis(run):
 def CountDeadPixels (maxDeadPixels, outfile, excludedrocs, prePixelAliveRun):
     maxeff = 100
 
-    prePixelAliveRunPath = '%s/Run_%d/Run_%d/' % (rundir,runfolder(run),run)
+    prePixelAliveRunPath = '%s/Run_%d/Run_%d/' %\
+                        (rundir,runfolder(prePixelAliveRun),prePixelAliveRun)
     preDeadPixelFile =\
-    glob.glob(os.path.join(prePixelAliveRunPath,'dump_pixelalive','dead_pixels.txt'))
+        glob.glob(os.path.join(prePixelAliveRunPath,'dump_pixelalive','dead_pixels.txt'))
     if len(preDeadPixelFile) != 1:
         raise RuntimeError("No pre-pixelalive dead pixel file found!")
     preDeadPixelFile = preDeadPixelFile[0]
@@ -66,7 +67,8 @@ def CountDeadPixels (maxDeadPixels, outfile, excludedrocs, prePixelAliveRun):
 
 
 
-def CheckEfficiency(run, filename, iteration, maxDeadPixels, skipFPix, skipBPix, excluded):
+def CheckEfficiency(run, filename, iteration, maxDeadPixels, skipFPix,\
+                    skipBPix, excluded, prePixelAliveRun):
 
     # excluded rocs
     excludedrocs = []
@@ -97,7 +99,10 @@ def CheckEfficiency(run, filename, iteration, maxDeadPixels, skipFPix, skipBPix,
           
     for dir in dirs:        
         file.cd(dir)
-        browseCalibFiles.browseROCChain(['%s/Run_%d/Run_%d/%s' % (rundir,runfolder(run),run,files[0])], CountDeadPixels, maxDeadPixels, outfile, excludedrocs)
+        browseCalibFiles.browseROCChain(['%s/Run_%d/Run_%d/%s' %
+                                         (rundir,runfolder(run),run,files[0])],
+                                        CountDeadPixels,\
+                                        maxDeadPixels, outfile, excludedrocs, prePixelAliveRun)
 
                         
     outfile = open("%s_%d.txt"%(filename,iteration),'r')
@@ -371,7 +376,8 @@ if (options.largeStep%options.singleStep != 0) :
 RunPixelAliveAnalysis(options.run)
 
 # --- Check the efficiency of all ROCS and make a list of failed rocs (i.e. rocs with more than maxDeadPixels pixels)
-CheckEfficiency(options.run,options.output,options.iteration,options.maxDeadPixels,options.skipFPix, options.skipBPix, options.exclude)
+CheckEfficiency(options.run,options.output,options.iteration,options.maxDeadPixels,options.skipFPix,
+                options.skipBPix, options.exclude, options.prePixelAliveRun)
 
 # --- Prepare new dac settings (change VcThr)
 if (options.makeNewDac==1):
