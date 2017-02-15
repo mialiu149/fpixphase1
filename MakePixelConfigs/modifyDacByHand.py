@@ -7,6 +7,11 @@ import os
 import ROOT
 import JMTTools as jt
 import cablemap as cm
+
+for i, arg in enumerate(sys.argv):
+    if(arg[0]=='-') and arg[1].isdigit():
+        sys.argv[i] = ' '+arg
+
 from mkDetConfig import mkNewConfigVersion, setAsDefault
 
 RUN_DIR = jt.run_dir(int(sys.argv[1]))
