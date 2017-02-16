@@ -41,8 +41,8 @@ def CountDeadPixels (maxDeadPixels, outfile, excludedrocs, prePixelAliveRun):
     with open(preDeadPixelFile,'r') as input:
         lines = input.read().split('\n')
         for x in lines:
-            item = x.split()
-            if len(item) != 2:
+            item = [e.strip() for e in x.split(':')]
+            if len(item) != 3:
                 continue
             deadPixelDict[item[0]]=item[1]
 
