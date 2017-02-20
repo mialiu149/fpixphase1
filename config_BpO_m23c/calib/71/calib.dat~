@@ -1,0 +1,17 @@
+Mode: PHRange
+Parameters:
+ScanMode masAllPixel
+UnMaskMinMaxPixels yes
+minPH 75
+maxPH 250
+Rows:
+1
+Cols:
+1
+VcalHigh
+Scan: PHScale  0 255 5
+Scan: PHOffset 0 255 5
+Scan: Vcal 25 100 75
+Repeat: 1
+ToCalibrate:
+all

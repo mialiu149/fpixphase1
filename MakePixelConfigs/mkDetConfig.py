@@ -60,7 +60,9 @@ def main():
     configBaseDir = os.environ['PIXELCONFIGURATIONBASE']
     if opts.hcs not in configBaseDir: print "your hc name doesn't match what's in PIXELCONFIGURATIONBASE, did you resource startanalysistab.sh to switch to another hc?"
 
-    cableMap_Fn='cablingmap_fpixphase1_BpO.csv'.replace('BmO',opts.hcs)
+    hcname = opts.hcs[0].upper()+opts.hcs[1].lower()+opts.hcs[-1].upper()
+    cableMap_Fn='cablingmap_fpixphase1_{0:s}.csv'.format(hcname)
+    #cableMap_Fn='cablingmap_fpixphase1_BpO.csv'
     dictionary = getdict(filename='csv/'+cableMap_Fn)
      
     moduleListByFed = []

@@ -3,8 +3,8 @@ from pprint import pprint
 from collections import defaultdict
 
 #HC, csv_fn, fed_offset = 'BmI', 'csv/cablingmap_fpixphase1_BmI.csv', 7
-#HC, csv_fn, fed_offset = 'BpO', 'csv/cablingmap_fpixphase1_BpO.csv', 7
-HC, csv_fn, fed_offset = 'BmO', 'csv/cablingmap_fpixphase1_BmO.csv', 7
+HC, csv_fn, fed_offset = 'BpO', 'csv/cablingmap_fpixphase1_BpO.csv', 7
+#HC, csv_fn, fed_offset = 'BmO', 'csv/cablingmap_fpixphase1_BmO.csv', 7
 #HC, csv_fn, fed_offset = 'BpI', 'csv/cablingmap_fpixphase1_BpI.csv', 7
 
 class Module:

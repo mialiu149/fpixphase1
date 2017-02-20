@@ -4,6 +4,7 @@ set_style(True)
 
 run = run_from_argv()
 run_dir = run_dir(run)
+#run_dir="/data/tif/Run_BmO/Run_1898/"
 in_fn = glob(os.path.join(run_dir, 'total.root'))
 if not in_fn:
     root_flist = glob(os.path.join(run_dir,'SCurve_Fed_*_Run_%s.root'%run)) 
@@ -17,7 +18,7 @@ in_fn = glob(os.path.join(run_dir, 'total.root'))
 in_fn = in_fn[0]
 out_dir = os.path.join(run_dir,'dump_scurve')
 if not os.path.isdir(out_dir):
-    os.system('mkdir -p %s' %out_dir)
+    os.system('mkdir -p -m 766 %s' %out_dir)
 
 pdf_fn = os.path.join(out_dir, 'SCurve_simple.pdf')
 

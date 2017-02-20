@@ -24,7 +24,7 @@ in_fn = glob(os.path.join(run_dir, 'total.dat'))
 in_fn = in_fn[0]
 out_dir = os.path.join(run_dir,'dump_scurve')
 if not os.path.isdir(out_dir):
-    os.system('mkdir -p %s' %out_dir)
+    os.system('mkdir -p -m 766 %s' %out_dir)
 
 #in_fn = sys.argv[1]
 #out_fn = sys.argv[2]

@@ -66,6 +66,11 @@ def run_dir(run):
 def run_dir_from_argv():
     return run_dir(run_from_argv())
 
+#this needs to be done smarter
+def run_dir_backupdisk_from_argv():
+    runnumber = run_from_argv()
+    return os.path.join("/data/tif/Run_BpO/", 'Run_%i' % runnumber)
+
 def run_fn(run, fn):
     return os.path.join(run_dir(run), fn)
 
@@ -185,12 +190,12 @@ class TrimResult:
         self.chi2 = float(chi2)
         self.prob = float(prob)
 
-def dec(dcol, pxl):
-    dcol = dcol & 0x1f
-    pxl = pxl & 0xff
-    col = dcol*2 + pxl%2
-    row = 80 - pxl/2
-    return col, row
+        def dec(dcol, pxl):
+            dcol = dcol & 0x1f
+            pxl = pxl & 0xff
+            col = dcol*2 + pxl%2
+            row = 80 - pxl/2
+            return col, row
 
 class configurations_txt:
     def __init__(self):
@@ -383,7 +388,9 @@ class mask_dat:
         for roc in xrange(16):
             f.write('ROC:     ' + self.module + '_ROC' + str(roc) + '\n')
             for col in xrange(52):
-                f.write('col%02i:   ' % col + ''.join(self.m[roc][col]) + '\n')
+		for row in xrange(80):
+                    self.m[roc][col][row] = str(self.m[roc][col][row])
+                f.write('col%02i:   ' %col + ''.join(self.m[roc][col]) + '\n')
         f.close()
 
 class translation_dat:
@@ -470,10 +477,8 @@ class trim_dat:
 def merge_trim_dats(fns, new_fn=None):
     # assemble a trim_dat from the fns, letting later fns override
     # results for earlier fns
-    print fns[0]
     td_merge = trim_dat(fns[0])
     for fn in fns[1:]:
-        print fn
         td_merge.update(trim_dat(fn))
     if new_fn:
         td_merge.write(new_fn)
@@ -496,5 +501,5 @@ if __name__ == '__main__' and len(sys.argv) > 1:
     elif mode == 'configs':
         c = configurations_txt()
         cd, vd = aliases_txt()
-        print c
+        #print c
         print 'configurations.txt in c and aliases.txt in cd, vd'

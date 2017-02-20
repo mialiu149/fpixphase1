@@ -81,7 +81,16 @@ for iroc, (roc, l) in enumerate(t.ls.iteritems()):
     nbins = [0, 0]
     medians = [0.,0.]
     fit_ranges = [None, None]
+    nforcontinue = 0
     for j in (0,1):
+        if n[j] == 0:
+            print "this crashes"
+            print n
+            print j
+            print d[0], d[1]
+            nforcontinue = 1
+            print "roc,col,row,j,d[j],means[j],mins[j],maxs[j]",roc,col,row,j,d[j],means[j],mins[j],maxs[j],nforcontinue
+            continue
         means[j] /= n[j]
         ths = [th for col, row, th, sg in d[j]]
         ths.sort()
@@ -95,7 +104,14 @@ for iroc, (roc, l) in enumerate(t.ls.iteritems()):
         extra = (maxs[j] - mins[j]) * 0.1
         ranges[j] = [mins[j] - extra, maxs[j] + extra]
         nbins[j] = int(round((ranges[j][1] - ranges[j][0]) / ws[j]))
+        if nbins[j] <= 0:
+            print "nbins",nbins
+            nforcontinue = 1
+            continue
         #print 'roc %s j=%i mean %f rms %f w %f nbins %i range %s' % (roc, j, means[j], rmses[j], ws[j], nbins[j], ranges[j])
+
+    if nforcontinue == 1:
+        continue
 
     hs = []
     for j, x in enumerate(['even', 'odd']):
@@ -112,15 +128,29 @@ for iroc, (roc, l) in enumerate(t.ls.iteritems()):
 
     fits = [None, None]
     for j in (0,1):
+        if nbins[j] <= 0:
+            print "this should not happen"
+            print n
+            print j
+            print d[0], d[1]
+            nforcontinue = 1
+            print "roc,col,row,j,d[j],means[j],mins[j],maxs[j]",roc,col,row,j,d[j],means[j],mins[j],maxs[j],nbins[j]
+            continue
         for ix, x in enumerate(['raw', 'noise']):
             c.cd(1+j*3+ix)
             h = hs[j][x]
             h.Draw()
             if x == 'raw':
                 f = ROOT.TF1('f', 'gaus', fit_ranges[j][0], fit_ranges[j][1])
+                if h.Integral() <=0:
+                    nforcontinue = 1
+                    continue
                 res = h.Fit(f, 'QRS')
                 assert fits[j] is None
                 fits[j] = (res.Parameter(1), res.Parameter(2))
+
+    if nforcontinue == 1:
+        continue
 
     for j,(mean,sigma) in enumerate(fits):
         h = hs[j]['norm']
@@ -140,7 +170,8 @@ del c
 
 assert set(raw.keys()) == set(norm.keys())
 
-map_c = None #ROOT.TCanvas('c', '', 1920, 1000)
+map_c = None
+# ROOT.TCanvas('c', '', 1920, 1000)
 #this_out_fn = out_fn + '.module_maps.pdf'
 module_maps_out_fn = os.path.join(out_dir,'bb3_module_maps.pdf')
 
@@ -152,7 +183,7 @@ max_pcnum = 4
 for pcnum in xrange(min_pcnum,max_pcnum+1):
     print pcnum
 
-    #modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi)]
+#    modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi)]
     modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi) if the_doer.moduleOK(m) and m.portcardnum == pcnum]
 
     for module in modules:
@@ -172,8 +203,7 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
             assert(len(lists)==16)
             if blankROC != 0:
                 print module.name+" has "+str(blankROC)+" blank ROCs!"
-
-
+            
             def xform(label, module_name, rocnum, col, row, val):
                 global bad_counts
                 if val is None:
@@ -204,12 +234,12 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
             title = label + '   ' + module.portcard + ' ' + module.portcard_phi[1] + ' ' + str(module.portcard_connection) + '   ' + module.name + '   ' + module.module + '   ' + module.internal_name
 
             h, fc, pt = fnal_pixel_plot(hs, module.name, title, z_range=z_range, existing_c=map_c)
-            #fc.SaveAs(module.name + '_' + label + '.pdf')
+            fc.SaveAs(module.name + '_' + label + '.pdf')
+            print module.name + '_' + label + '.pdf'
             if map_c is None:
                 map_c = fc
                 map_c.SaveAs(module_maps_out_fn + '[')
             map_c.SaveAs(module_maps_out_fn)
-
 map_c.SaveAs(module_maps_out_fn + ']')
 
 out_dp_fn = os.path.join(out_dir,'deadPixelBySigma.txt')
