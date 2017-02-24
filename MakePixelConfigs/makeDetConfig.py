@@ -1,5 +1,4 @@
-import os,sys
-from cablemap import *
+import os,sys,csv
 from optparse import OptionParser
 
 class MyParser(OptionParser):
@@ -34,6 +33,15 @@ parser.add_option('','--include',dest='icld',help='Input name list of module to 
 
 (opts, args) = parser.parse_args()
 
+def getdict(filename='csv/cablingmap_fpixphase1_BpI.csv'):
+    rows = []
+    with open(filename, mode='r') as infile:
+         reader = csv.DictReader(infile)
+         for row in reader:  
+             rows.append(row)
+    return rows
+
+
 def list2dat(lst,fn):
     with open(fn, 'w') as output:
         output.write('Rocs:\n')
@@ -66,7 +74,7 @@ def setAsDefault(configName, version):
 def main():
     configBaseDir = os.environ['PIXELCONFIGURATIONBASE']
 
-    cableMap_Fn='cablingmap_FPix.csv'
+    cableMap_Fn='csv/cablingmap_FPix.csv'
     dictionary = getdict(filename=''+cableMap_Fn)
     
     includelist = []
