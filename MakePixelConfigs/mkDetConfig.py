@@ -24,13 +24,26 @@ parser.add_option('','--include',dest='icld',help='Input name list of module to 
 
 (opts, args) = parser.parse_args()
 
-def list2dat(lst,fn):
+
+def list2dat(lstall,fn,exlist=None):
     with open(fn, 'w') as output:
         output.write('Rocs:\n')
-        for element in lst:
-            for x in range(16):
-                line = element+'_ROC%s'%str(x)+'\n'
-                output.write(line)
+        for element in lstall:
+            if exlist != None:
+                if element not in exlist:
+                    for x in xrange(16):
+                        line = '{0}_ROC{1}\n'.format(element, str(x))
+                        output.write(line)
+                else:
+                    for x in xrange(16):
+                        # line = element+'_ROC%s'%str(x)+' '+'noAnalogSignal'+'\n'
+                        line = "{0:35}{1}\n".format('{0}_ROC{1}'.format(element, str(x)),
+                                                   'noAnalogSignal')
+                        output.write(line)
+            else:
+                for x in xrange(16):
+                    line = '{0}_ROC{1}\n'.format(element, str(x))
+                    output.write(line)
 
 def mkNewConfigVersion(configName):
     configBaseDir = os.environ['PIXELCONFIGURATIONBASE']
@@ -46,7 +59,7 @@ def mkNewConfigVersion(configName):
     return newVersion
 
 def setAsDefault(configName, version):
-    cdb = "~tif/TriDAS/pixel/PixelConfigDBInterface/test/bin/linux/x86_64_slc6/PixelConfigDBCmd.exe "
+    cdb = "{0}/pixel/PixelConfigDBInterface/test/bin/linux/x86_64_slc6/PixelConfigDBCmd.exe".format(os.environ['BUILD_HOME'])
     args = "--insertVersionAlias "+configName+" "+str(version)+" Default"
     print cdb+args
     os.system(cdb+args)
@@ -54,22 +67,26 @@ def setAsDefault(configName, version):
 
 
 def main():
-    if not opts.hcs: 
+    if not opts.hcs:
        print "please input a hc name this way: --hc='BmO' (for example)"
        sys.exit(1)
-    configBaseDir = os.environ['PIXELCONFIGURATIONBASE']
-    if opts.hcs not in configBaseDir: print "your hc name doesn't match what's in PIXELCONFIGURATIONBASE, did you resource startanalysistab.sh to switch to another hc?"
+    # configBaseDir = os.environ['PIXELCONFIGURATIONBASE']
+    # if opts.hcs not in configBaseDir: print "your hc name doesn't match what's in PIXELCONFIGURATIONBASE, did you resource startanalysistab.sh to switch to another hc?"
 
-    hcname = opts.hcs[0].upper()+opts.hcs[1].lower()+opts.hcs[-1].upper()
-    cableMap_Fn='cablingmap_fpixphase1_{0:s}.csv'.format(hcname)
+    # hcname = opts.hcs[0].upper()+opts.hcs[1].lower()+opts.hcs[-1].upper()
+    hcnames = [x[0].upper()+x[1].lower()+x[2].upper() for x in opts.hcs.split(' ')]
+    cableMap_Fn='cablingmap_FPix.csv'
     #cableMap_Fn='cablingmap_fpixphase1_BpO.csv'
     dictionary = getdict(filename='csv/'+cableMap_Fn)
-     
+
     moduleListByFed = []
     moduleListByPrt = []
     moduleListByDsk = []
     includelist = []
-    
+
+    config = 'detconfig'
+    newVersion = mkNewConfigVersion(config)
+
     if opts.feds:
          fedlist = opts.feds.split(' ')
          moduleListByFed=[item['Official name of position'] for item in dictionary if item['FED ID'] in fedlist]
@@ -80,7 +97,7 @@ def main():
     if opts.dsks:
         dsklist = opts.dsks.split(' ')
         moduleListByDsk=[item['Official name of position'] for item in dictionary if len(item['Official name of position'].split('_'))>3 and item['Official name of position'].split('_')[2][-1] in dsklist]
-    
+
     if opts.icld:
         includelist = opts.icld.split(' ')
 
@@ -93,14 +110,21 @@ def main():
 
     if opts.ex:
         exlist = opts.ex.split(' ')
-        moduleList = [module for module in moduleList if module not in exlist]
-    
-    config = 'detconfig'
-    newVersion = mkNewConfigVersion(config)
-    
-    list2dat(moduleList, 'detectconfig.dat')
+        if opts.feds or opts.prts or opts.dsks or opts.icld:
+            moduleList = [module for module in moduleList if module not in exlist]
+            moduleList = [md for md in moduleList if md.split('_')[1] in hcnames]
+            list2dat(moduleList, 'detectconfig.dat')
+        else:
+            moduleList = sorted([item['Official name of position'] for item in dictionary])
+            moduleList = [md for md in moduleList if md.split('_')[1] in hcnames]
+            list2dat(moduleList, 'detectconfig.dat', exlist)
+    else:
+        moduleList = [md for md in moduleList if md.split('_')[1] in hcnames]
+        list2dat(moduleList, 'detectconfig.dat')
+
+
     save = raw_input("Do you want to set new version <%s/%d> as default? (y/N)?\n"%(config,newVersion))
-    
+
     if save.lower() in ['n','no']:
         save = False
     elif save.lower() in ['y','yes']:
