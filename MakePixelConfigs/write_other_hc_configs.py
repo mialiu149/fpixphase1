@@ -3,9 +3,9 @@ from pprint import pprint
 from collections import defaultdict
 
 #HC, csv_fn, fed_offset = 'BmI', 'csv/cablingmap_fpixphase1_BmI.csv', 7
-HC, csv_fn, fed_offset = 'BpO', 'csv/cablingmap_fpixphase1_BpO.csv', 7
+#HC, csv_fn, fed_offset = 'BpO', 'csv/cablingmap_fpixphase1_BpO.csv', 7
 #HC, csv_fn, fed_offset = 'BmO', 'csv/cablingmap_fpixphase1_BmO.csv', 7
-#HC, csv_fn, fed_offset = 'BpI', 'csv/cablingmap_fpixphase1_BpI.csv', 7
+HC, csv_fn, fed_offset = 'BpI', 'csv/cablingmap_fpixphase1_BpI.csv', 7
 
 class Module:
     header = None
@@ -34,7 +34,7 @@ class Module:
 
         legal_blds = range(1, (17 if self.rng == 2 else 11)+1)
         self.bld  = chompit(n[3], 'BLD', legal_blds)
-        
+
         n = self.internal_name = d['internal naming per Disk']
         n, n2 = n[:-1], n[-1]
         nint = int(n)
@@ -148,8 +148,24 @@ module_sorter_by_portcard = lambda m: (m.disk, m.portcardnum, m.poh_num)
 module_sorter_by_portcard_phi = lambda m: (m.disk, m.portcardnum, -2*m.portcard_connection + m.portcardstack)
 
 class cable_map_parser:
-    def __init__(self, disk=-1):
+    def __init__(self, disk=-1, myFED=None):
         self.curr_disk = disk
+
+        if myFED != None:
+            global HC
+            if myFED in xrange(1320, 1327):
+                HC, csv_fn, fed_offset = 'BmI', 'csv/cablingmap_fpixphase1_BmI.csv', 7
+            if myFED in xrange(1332, 1339):
+                HC, csv_fn, fed_offset = 'BmO', 'csv/cablingmap_fpixphase1_BmO.csv', 7
+            if myFED in xrange(1296, 1303):
+                HC, csv_fn, fed_offset = 'BpI', 'csv/cablingmap_fpixphase1_BpI.csv', 7
+            if myFED in xrange(1308, 1315):
+                HC, csv_fn, fed_offset = 'BpO', 'csv/cablingmap_fpixphase1_BpO.csv', 7
+
+        self.f = open(csv_fn)
+        self.r = csv.reader(self.f)
+        self.rows = list(self.r)
+        Module.header = self.rows.pop(0)
 
         self.module_names_check = []
         # should-haves for sanity check
@@ -164,11 +180,6 @@ class cable_map_parser:
                         self.module_names_check.append('FPix_' + HC + '_D%(disk)i_BLD%(bld)i_PNL%(pnl)i_RNG%(rng)i' % locals())
         assert len(self.module_names_check) == 168
         self.module_names_check.sort()
-
-        self.f = open(csv_fn)
-        self.r = csv.reader(self.f)
-        self.rows = list(self.r)
-        Module.header = self.rows.pop(0)
 
         self.modules = [] 
         self.modules_by_name = {}

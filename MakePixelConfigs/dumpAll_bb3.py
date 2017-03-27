@@ -3,7 +3,7 @@ from pprint import pprint
 from JMTTools import *
 from JMTROOTTools import *
 import moduleSummaryPlottingTools as FNAL
-from write_other_hc_configs import doer, HC, module_sorter_by_portcard_phi
+from write_other_hc_configs import cable_map_parser, module_sorter_by_portcard_phi
 set_style(light=True)
 ROOT.gStyle.SetOptStat(111110)
 ROOT.gStyle.SetOptFit(1111)
@@ -19,26 +19,37 @@ ROOT.gStyle.SetOptFit(1111)
 run = run_from_argv()
 run_dir = run_dir(run)
 
-in_fn = glob(os.path.join(run_dir, 'total.dat'))
-if not in_fn:
-    trim_flist = glob(os.path.join(run_dir,'TrimOutputFile_Fed_*.dat'))
-    if not trim_flist:
-        raise RuntimeError('Run analysis first!')
-    out_dat = os.path.join(run_dir,'total.dat')
-    args = ' '.join(trim_flist)
-    cmd  = 'cat %s > %s'%(args,out_dat)
-    os.system(cmd)
 
-in_fn = glob(os.path.join(run_dir, 'total.dat'))
+if len(sys.argv) == 2:
+	in_fn = glob(os.path.join(run_dir, 'total.dat'))
+	if not in_fn:
+	    trim_flist = glob(os.path.join(run_dir,'TrimOutputFile_Fed_*.dat'))
+	    if not trim_flist:
+	        raise RuntimeError('Run analysis first!')
+	    out_dat = os.path.join(run_dir,'total.dat')
+	    args = ' '.join(trim_flist)
+	    cmd  = 'cat %s > %s'%(args,out_dat)
+	    os.system(cmd)
+
+	in_fn = glob(os.path.join(run_dir, 'total.dat'))
+	out_dir = os.path.join(run_dir,'dump_bb3')
+elif len(sys.argv) == 3:
+	''' python dumpAll_bb3.py 123 '1294' '''
+	fednum = sys.argv[2]
+	in_fn = glob(os.path.join(run_dir, 'TrimOutputFile_Fed_{0}.dat'.format(fednum)))
+	out_dir = os.path.join(run_dir,'dump_bb3_FED{0}'.format(fednum))
+else:
+	sys.exit("I dont know what you want.")
+
 in_fn = in_fn[0]
-out_dir = os.path.join(run_dir,'dump_bb3')
 if not os.path.isdir(out_dir):
-    os.system('mkdir -p %s' %out_dir) 
-    os.system('chmod a+w %s' %out_dir) 
+    os.system('mkdir -p %s' %out_dir)
+    os.system('chmod a+w %s' %out_dir)
 
 roc_fits_out_fn = os.path.join(out_dir,'bb3_roc_fits.pdf')
 
-the_doer = doer()
+#the_doer = doer()
+the_doer = cable_map_parser(-1,int(fednum))
 t = trim_dat(in_fn)
 
 raw  = defaultdict(lambda: [None]*4160)
@@ -171,7 +182,7 @@ del c
 assert set(raw.keys()) == set(norm.keys())
 
 map_c = None
-# ROOT.TCanvas('c', '', 1920, 1000)
+#ROOT.TCanvas('c', '', 1920, 1000)
 #this_out_fn = out_fn + '.module_maps.pdf'
 module_maps_out_fn = os.path.join(out_dir,'bb3_module_maps.pdf')
 
@@ -185,7 +196,6 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
 
 #    modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi)]
     modules = [m for m in sorted(the_doer.modules, key=module_sorter_by_portcard_phi) if the_doer.moduleOK(m) and m.portcardnum == pcnum]
-
     for module in modules:
         for label, d in [('raw', raw), ('norm', norm), ('bad', norm)]:
             lists = []
@@ -197,13 +207,12 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
                     lists.append([0.]*4160)
                     continue
                 lists.append(d[roc])
-            
+
             if blankROC == 16:
                 continue
             assert(len(lists)==16)
             if blankROC != 0:
                 print module.name+" has "+str(blankROC)+" blank ROCs!"
-            
             def xform(label, module_name, rocnum, col, row, val):
                 global bad_counts
                 if val is None:
@@ -222,7 +231,6 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
                 else:
                     bad_counts[module_name][rocnum] += 0
                 return val
-
             hs = flat_to_module(label, module.name, lists, xform)
 
             z_range = None
@@ -234,26 +242,27 @@ for pcnum in xrange(min_pcnum,max_pcnum+1):
             title = label + '   ' + module.portcard + ' ' + module.portcard_phi[1] + ' ' + str(module.portcard_connection) + '   ' + module.name + '   ' + module.module + '   ' + module.internal_name
 
             h, fc, pt = fnal_pixel_plot(hs, module.name, title, z_range=z_range, existing_c=map_c)
-            fc.SaveAs(module.name + '_' + label + '.pdf')
-            print module.name + '_' + label + '.pdf'
+            #fc.SaveAs(module.name + '_' + label + '.pdf')
+            #print module.name + '_' + label + '.pdf'
             if map_c is None:
                 map_c = fc
                 map_c.SaveAs(module_maps_out_fn + '[')
             map_c.SaveAs(module_maps_out_fn)
 map_c.SaveAs(module_maps_out_fn + ']')
 
+
 out_dp_fn = os.path.join(out_dir,'deadPixelBySigma.txt')
 if os.path.isfile(out_dp_fn):
     cmd = 'mv %s %s' %(out_dp_fn,out_dp_fn+'.old')
     os.system(cmd)
 
-print 'bad by module/roc:'
+print 'Number of outlier pixels by module/roc:'
 for m, rl in bad_counts.iteritems():
-    outline = '{0:30}{1:3d}  {2}\n'.format(m,sum(rl),str(rl)) 
+    outline = '{0:30}{1:3d}  {2}\n'.format(m,sum(rl),str(rl))
     with open(out_dp_fn,'a+') as output:
         output.write(outline)
 
 
 os.system('cat %s' %out_dp_fn)
 os.system('wc -l %s' %out_dp_fn)
-os.system('evince %s'%module_maps_out_fn)
+#os.system('evince %s'%module_maps_out_fn)
